@@ -127,4 +127,64 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Override
+    public ResponseEntity<BaseResponse> disableById(Long id) {
+        try {
+            Optional<User> user = userRepository.findById(id);
+            if(!user.isPresent()) {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(String.format("Người dùng có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.NOT_FOUND.value())),
+                        HttpStatus.NOT_FOUND
+                );
+            } else {
+                User userNew = user.get();
+                userNew.setStatus(0);
+                userRepository.save(userNew);
+
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(String.format("Xóa người dùng có mã %d thành công.", id), true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> enableById(Long id) {
+        try {
+            Optional<User> user = userRepository.findById(id);
+            if(!user.isPresent()) {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(String.format("Người dùng có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.NOT_FOUND.value())),
+                        HttpStatus.NOT_FOUND
+                );
+            } else {
+                User userNew = user.get();
+                userNew.setStatus(1);
+                userRepository.save(userNew);
+
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(String.format("Bật người dùng có mã %d thành công.", id), true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
 }

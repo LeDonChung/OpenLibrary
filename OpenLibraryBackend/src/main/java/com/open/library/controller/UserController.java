@@ -34,7 +34,30 @@ public class UserController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
-
+    @PostMapping("/disable/{id}")
+    public ResponseEntity<BaseResponse> deleteById(@PathVariable Long id) {
+        try {
+            return userService.disableById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+    @PostMapping("/enable/{id}")
+    public ResponseEntity<BaseResponse> enableById(@PathVariable Long id) {
+        try {
+            return userService.enableById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
     @PostMapping("/update")
     public ResponseEntity<BaseResponse> updateById(@RequestBody UserDTO userDto) {
         try {

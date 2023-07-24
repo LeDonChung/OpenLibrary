@@ -13,4 +13,8 @@ public interface UserService {
     ResponseEntity<BaseResponse> update(UserDTO userDTO);
 
     ResponseEntity<BaseResponse> checkToken();
+
+    ResponseEntity<BaseResponse> disableById(Long id);
+
+    ResponseEntity<BaseResponse> enableById(Long id);
 }

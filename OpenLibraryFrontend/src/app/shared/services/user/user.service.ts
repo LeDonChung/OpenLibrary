@@ -8,6 +8,7 @@ import { User } from '../../models/User';
   providedIn: 'root'
 })
 export class UserService {
+  
   private apiUrl:string = SystemConstraints.API_URL;
   private httpOptions = {
     headers: new HttpHeaders({
@@ -24,5 +25,17 @@ export class UserService {
   login(user: User): Observable<Object> {
     return this.httpClient.post<Object>(`${this.apiUrl}/user/login`, user, this.httpOptions);
   }
+  update(user: User): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/user/update`, user, this.httpOptions);
+  }
+  getAllUser(): Observable<User[]> {
+    return this.httpClient.get<User[]>(`${this.apiUrl}/user/getAllUser`, this.httpOptions);
+  }
+  enableById(id: number): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/user/enable/${id}`, this.httpOptions);
+  }
+  disableById(id: number): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/user/disable/${id}`, this.httpOptions);
+  } 
 
 }
