@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <h4 class="card-header">Đăng nhập</h4>
+                <div class="card-body">
+                    <form [formGroup]="loginForm">
+                        <div *ngIf="message" class="alert alert-info">
+                            {{ message }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tài khoản</label>
+                            <input type="text" formControlName="username" class="form-control" />
+                            <div *ngIf="loginForm.controls.username.invalid && loginForm.controls.username.touched">
+                                <span class="field-error" *ngIf="loginForm.controls.username.errors.required">
+                                    Vui lòng nhập tài khoản
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu</label>
+                            <input type="password" formControlName="password" class="form-control" />
+                            <div *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+                                <span class="field-error" *ngIf="loginForm.controls.password.errors.required">
+                                    Vui lòng nhập mật khẩu
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" (click)="onSubmit()">
+                                Login
+                            </button>
+                            <a routerLink="/register" class="btn btn-link">Đăng ký</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
