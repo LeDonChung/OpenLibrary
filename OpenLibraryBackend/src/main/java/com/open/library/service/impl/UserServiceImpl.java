@@ -1,5 +1,6 @@
 package com.open.library.service.impl;
 
+import com.open.library.POJO.Role;
 import com.open.library.POJO.User;
 import com.open.library.constraints.SystemConstraints;
 import com.open.library.jwt.JwtService;
@@ -9,10 +10,15 @@ import com.open.library.repository.UserRepository;
 import com.open.library.service.UserService;
 import com.open.library.utils.ImageUploadUtils;
 import com.open.library.utils.OpenLibraryUtils;
+import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
+import com.open.library.utils.response.PageResponseDTO;
 import com.open.library.utils.response.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,21 +72,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse> getAllUser() {
+    public ResponseEntity<BaseResponse> getAllUser(PageDTO pageDTO) {
         List<UserResponseDTO> results = new ArrayList<>();
         try {
             boolean isAdmin = jwtService.idAdmin();
             if(isAdmin) {
-                results = userRepository.findAllUser()
-                        .stream().map((user) -> userMapper.toResponseDto(user)).collect(Collectors.toList());
+                Pageable pageable = PageRequest.of(pageDTO.getPageIndex(), pageDTO.getPageSize());
+                Role roleCustomer = roleRepository.findByCode("CUSTOMER");
+                results = userRepository.findAllByRolesContains(roleCustomer, pageable).stream().map((user) -> userMapper.toResponseDto(user)).collect(Collectors.toList());
+//                results = userRepository.findAllUser()
+//                        .stream().map((user) -> userMapper.toResponseDto(user)).collect(Collectors.toList());
 
                 return new ResponseEntity<>(
-                        OpenLibraryUtils.getResponse(results, true, String.valueOf(HttpStatus.OK.value())),
+                        OpenLibraryUtils.getResponse(
+                                PageResponseDTO.getPage(pageDTO, results, userRepository.countAllUser())
+                                , true, String.valueOf(HttpStatus.OK.value())),
                         HttpStatus.OK
                 );
             } else {
                 return new ResponseEntity<>(
-                        OpenLibraryUtils.getResponse(results, false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
+                        OpenLibraryUtils.getResponse(
+                                PageResponseDTO.builder().length(0).pageIndex(0)
+                                        .dataSource(new ArrayList<>()).build()
+                                , false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
                         HttpStatus.UNAUTHORIZED
                 );
             }
@@ -89,7 +103,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return new ResponseEntity<>(
-                OpenLibraryUtils.getResponse(results, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                OpenLibraryUtils.getResponse(
+                        PageResponseDTO.builder().length(0).pageIndex(0)
+                                .dataSource(new ArrayList<>()).build()
+                        , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

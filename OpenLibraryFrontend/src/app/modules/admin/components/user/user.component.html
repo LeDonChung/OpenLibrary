@@ -4,7 +4,7 @@
     </div>
     <div class="page__content shadow p-3 position-relative">
       <div class="page__content-data">
-        <mat-table #table [dataSource]="dataSource">
+        <mat-table #table [dataSource]="page.dataSource">
             <ng-container matColumnDef="position">
                 <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
                 <mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }}  </mat-cell>
@@ -20,7 +20,7 @@
             <ng-container matColumnDef="image">
                 <mat-header-cell *matHeaderCellDef>Hình ảnh</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <img style="width: 50px; height: 50px; margin: auto;" src="{{ element.image }}" alt="">
+                    <img style="width: 50px; height: 50px; margin: auto;" [src]="element.image == null ? '' : 'data:image/jpeg;base64,' + element.image " alt="">
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="action">
@@ -37,6 +37,14 @@
             <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
         </mat-table>
+        <mat-paginator
+                [length]="page.length"
+                [pageIndex]="page.pageIndex"
+                [pageSize]="page.pageSize"
+                [pageSizeOptions]="[]"
+                (page)="loadData($event)"
+                >
+        </mat-paginator>
       </div>
     </div>
   </div>

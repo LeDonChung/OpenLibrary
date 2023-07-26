@@ -7,6 +7,8 @@ import { SnackbarService } from 'src/app/shared/services/snackbar/snackbar.servi
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
 import { Router } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
+import { Page } from 'src/app/shared/models/Page';
 
 @Component({
   selector: 'app-user',
@@ -16,9 +18,9 @@ import { Router } from '@angular/router';
 export class UserComponent implements OnInit {
 
   public displayColumns: string[] = ["position", "fullName", "username", "image", "action"]
-  public dataSource: User[] = [];
   public responeMessage: any;
-
+  public page: Page<User> = new Page(0, 0, 5, []);
+  public dataSource: any;
   constructor(
     private userService: UserService,
     private snackbarService: SnackbarService,
@@ -28,15 +30,21 @@ export class UserComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.loadData();
+    this.loadData(null);
   }
 
-  loadData() {
+  loadData(event: any) {
     this.ngxService.start();
-    this.userService.getAllUser().subscribe((res: any) => {
+    
+    if(event === null) {
+      this.page = new Page(0, 0, 5, []);
+    } else {
+      this.page = new Page(event.length, event.pageIndex, event.pageSize, []);
+    }
+    this.userService.getAllUser(this.page).subscribe((res: any) => {
       this.ngxService.stop();
-      this.dataSource = res.data;
-
+      this.page = res.data;
+      console.log(this.page);
     }, (errors: any) => {
       console.log(errors);
       let error = errors.error;
@@ -67,7 +75,7 @@ export class UserComponent implements OnInit {
       this.userService.enableById(user.id).subscribe((res: any) => {
         this.ngxService.stop();
         this.snackbarService.open(res.data, 'success');
-        this.loadData();
+        this.loadData(null);
       }, (errors: any) => {
         console.log(errors);
         let error = errors.error;
@@ -99,7 +107,7 @@ export class UserComponent implements OnInit {
       this.userService.disableById(user.id).subscribe((res: any) => {
         this.ngxService.stop();
         this.snackbarService.open(res.data, 'success');
-        this.loadData();
+        this.loadData(null);
       }, (errors: any) => {
         console.log(errors);
         let error = errors.error;

@@ -1,5 +1,6 @@
 package com.open.library.service;
 
+import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
 import com.open.library.utils.response.UserResponseDTO;
@@ -9,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UserService {
     ResponseEntity<BaseResponse> register(UserDTO user);
 
-    ResponseEntity<BaseResponse> getAllUser();
+    ResponseEntity<BaseResponse> getAllUser(PageDTO pageDTO);
 
     ResponseEntity<BaseResponse> update(UserDTO userDTO);
 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SystemConstraints } from 'src/app/shared/SystemConstraints';
 import { User } from '../../models/User';
+import { Page } from '../../models/Page';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +35,8 @@ export class UserService {
         observe: 'response'
     });
   }
-  getAllUser(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.apiUrl}/user/getAllUser`, this.httpOptions);
+  getAllUser(page: Page<User>): Observable<User[]> {
+    return this.httpClient.post<User[]>(`${this.apiUrl}/user/getAllUser`, page, this.httpOptions);
   }
   enableById(id: number): Observable<Object> {
     return this.httpClient.post<Object>(`${this.apiUrl}/user/enable/${id}`, this.httpOptions);

@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { UserComponent } from './components/user/user.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
@@ -64,6 +65,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatTableModule,
     MatInputModule,
     MatFormFieldModule,
+    MatPaginatorModule,
     MatButtonModule,
     MatSnackBarModule,
     MatDialogModule,

@@ -4,8 +4,10 @@ import com.open.library.constraints.SystemConstraints;
 import com.open.library.service.UserService;
 import com.open.library.utils.OpenLibraryUtils;
 import com.open.library.utils.ValidateObject;
+import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
+import com.open.library.utils.response.PageResponseDTO;
 import com.open.library.utils.response.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -22,16 +25,19 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/getAllUser")
-    public ResponseEntity<BaseResponse> getAllUser() {
+    @PostMapping("/getAllUser")
+    public ResponseEntity<BaseResponse> getAllUser(@RequestBody PageDTO pageDTO) {
         try {
-            return userService.getAllUser();
+            return userService.getAllUser(pageDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return new ResponseEntity<>(
-                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                OpenLibraryUtils.getResponse(
+                        PageResponseDTO.builder().length(0).pageIndex(0)
+                                .dataSource(new ArrayList<>()).build()
+                        , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
