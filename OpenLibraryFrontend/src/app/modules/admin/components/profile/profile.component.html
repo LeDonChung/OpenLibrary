@@ -1,0 +1,65 @@
+<div class="container-fluid page">
+    <div class="d-flex page__box p-3 mt-2">Hồ sơ</div>
+    <div class="page__content shadow p-3 position-relative">
+      <div class="page__content-data">
+        <div class="row">
+            <div class="col-sm-12 col-md-7">
+                <form fxFlex fxLayout="column" [formGroup]="userForm">
+                    <h2 class="text-center" style="color: #000;">Thông tin cá nhân</h2>
+                    <mat-form-field fxFlex>
+                        <mat-label>Họ và tên</mat-label>
+                        <input matInput formControlName="fullName" required>
+                        <mat-error *ngIf="userForm.controls.fullName.touched && userForm.controls.fullName.invalid">
+                            <span class="field-error" *ngIf="userForm.controls.fullName.errors.required">
+                                Vui lòng nhập họ tên đầy đủ.
+                            </span>
+                            <span class="field-error" *ngIf="userForm.controls.fullName.errors.pattern">
+                                Vui lòng nhập họ tên đầy đủ từ 5 kí tự.
+                            </span>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex>
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" required>
+                        <!--
+                        <mat-error *ngIf="userForm.controls.email.touched && userForm.controls.email.invalid">
+                            <span class="field-error" *ngIf="userForm.controls.email.errors.pattern">
+                                Email không hợp lệ.
+                            </span>
+                        </mat-error>
+                        -->
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Số điện thoại</mat-label>
+                        <input matInput formControlName="phoneNumber" required>
+                        <!--
+                        <mat-error *ngIf="invalidPhoneNumber()">
+                            <span class="field-error">
+                                Số điện thoại không hợp lệ.
+                            </span>
+                        </mat-error>
+                        -->
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="onUpdateInformation()" [disabled]="!(userForm.valid && userForm.dirty)">
+                        <mat-icon>save</mat-icon>
+                        Lưu thông tin 
+                    </button>
+                </form>
+            </div>
+            <div class="col-sm-12 col-md-5">
+                <h2 class="text-center" style="color: #000;">Hình ảnh</h2>
+                <label class="btn-upload">
+                    <input type="file" name="fileupload" (change)="onViewImage($event)">
+                    <button class="btn">Choose Image</button>
+                    <img [src]="!isImg  ? imgUrl : 'data:image/jpeg;base64,' + imgUrl" style="width: 200px; height: 200px;">
+                    <button mat-raised-button color="primary" (click)="onUploadImageUser()">
+                    <mat-icon>save</mat-icon>
+                    Lưu hình ảnh 
+                </button>
+                </label>
+                
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -34,17 +34,13 @@ public class UserMapper {
         entity.setPassword(dto.getPassword());
         entity.setPhoneNumber(dto.getPhoneNumber());
         entity.setEmail(dto.getEmail());
-        entity.setImage(dto.getImage());
         return entity;
     }
 
     public User toEntity(User userOld, UserDTO userNew) {
         userOld.setFullName(userNew.getFullName());
-        userOld.setUsername(userNew.getUsername());
-        userOld.setPassword(userNew.getPassword());
         userOld.setPhoneNumber((userNew.getPhoneNumber()));
         userOld.setEmail(userNew.getEmail());
-        userOld.setImage(userNew.getImage());
         return userOld;
     }
 }

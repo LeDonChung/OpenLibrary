@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -29,6 +30,18 @@ public class UserController {
             e.printStackTrace();
         }
 
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+    @GetMapping("/getCurrentUser")
+    public ResponseEntity<BaseResponse> getByUsername() {
+        try {
+            return userService.getCurrentUser();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(
                 OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
@@ -61,14 +74,6 @@ public class UserController {
     @PostMapping("/update")
     public ResponseEntity<BaseResponse> updateById(@RequestBody UserDTO userDto) {
         try {
-            Map<String, String> errors = ValidateObject.validateUserDTO(userDto);
-            if (ObjectUtils.isEmpty(errors)) {
-                return new ResponseEntity<>(
-                        OpenLibraryUtils.getResponse(errors, false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
-                        HttpStatus.BAD_REQUEST
-                );
-            }
-
             return userService.update(userDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,6 +118,19 @@ public class UserController {
     public ResponseEntity<BaseResponse> checkToken() {
         try {
             return userService.checkToken();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @PostMapping("/{id}/uploadImage")
+    public ResponseEntity<BaseResponse> updateImageUser(@RequestParam("image") MultipartFile image, @PathVariable Long id) {
+        try {
+            return userService.updateImageUser(id, image);
         } catch (Exception e) {
             e.printStackTrace();
         }

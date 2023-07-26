@@ -26,13 +26,10 @@
             <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <button mat-icon-button>
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button *ngIf="element.status == 0" mat-raised-button color="primary" (click)="enable(element.id)">
+                    <button *ngIf="element.status == 0" mat-raised-button color="primary" (click)="enable(element)">
                         Bật
                     </button>
-                    <button *ngIf="element.status == 1" mat-raised-button color="warn" (click)="disable(element.id)">
+                    <button *ngIf="element.status == 1" mat-raised-button color="warn" (click)="disable(element)">
                         Xóa
                     </button>
                 </mat-cell>

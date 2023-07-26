@@ -7,6 +7,7 @@ import com.open.library.mapper.UserMapper;
 import com.open.library.repository.RoleRepository;
 import com.open.library.repository.UserRepository;
 import com.open.library.service.UserService;
+import com.open.library.utils.ImageUploadUtils;
 import com.open.library.utils.OpenLibraryUtils;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final ImageUploadUtils imageUploadUtils;
 
     @Override
     public ResponseEntity<BaseResponse> register(UserDTO userDTO) {
@@ -177,6 +181,71 @@ public class UserServiceImpl implements UserService {
                 );
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getCurrentUser() {
+        try {
+            String username = jwtService.getCurrentUser();
+            Optional<User> user = this.userRepository.findByUsername(username);
+            if(!user.isPresent()) {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                        HttpStatus.BAD_REQUEST
+                );
+            }
+
+            return new ResponseEntity<>(
+                    OpenLibraryUtils.getResponse(userMapper.toResponseDto(user.get()), true, String.valueOf(HttpStatus.OK)),
+                    HttpStatus.OK
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> updateImageUser(Long id, MultipartFile image) {
+        try {
+            Optional<User> userOptional = userRepository.findById(id);
+            if(!userOptional.isPresent()) {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(String.format("Người dùng có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.NOT_FOUND.value())),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+            User user = userOptional.get();
+            if(ObjectUtils.isEmpty(image)) {
+                user.setImage(null);
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse("Cập nhật hình ảnh không thành công thành công.", false, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            } else {
+                if(!imageUploadUtils.checkExistedImageUser(image)) {
+                    imageUploadUtils.uploadImageUser(image);
+                }
+                user.setImage(Base64.getEncoder().encodeToString(image.getBytes()));
+                userRepository.save(user);
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse("Cập nhật hình ảnh thành công.", true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

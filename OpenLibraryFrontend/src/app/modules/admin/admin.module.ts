@@ -13,10 +13,17 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { UserComponent } from './components/user/user.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
+import { ConfirmationComponent } from './components/dialog/confirmation/confirmation.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ProfileComponent } from './components/profile/profile.component';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text: 'Loading',
@@ -38,10 +45,15 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     HeaderComponent,
     SidenavComponent,
     UserComponent,
+    ConfirmationComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
     // * MATERIAL IMPORTS
     MatSidenavModule,
     MatToolbarModule,
@@ -50,8 +62,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatDividerModule,
     MatListModule,
     MatTableModule,
+    MatInputModule,
+    MatFormFieldModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatDialogModule,
+    MatTableModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ]
 })

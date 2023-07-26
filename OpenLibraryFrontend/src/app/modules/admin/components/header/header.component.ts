@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit{
     this.router.navigate(['/login']);
   }
   profile() {
+    this.router.navigate(['/admin/profile']);
     
   }
   toggleSidebar() {

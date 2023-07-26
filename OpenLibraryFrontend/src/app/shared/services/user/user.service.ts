@@ -9,6 +9,7 @@ import { User } from '../../models/User';
 })
 export class UserService {
   
+  
   private apiUrl:string = SystemConstraints.API_URL;
   private httpOptions = {
     headers: new HttpHeaders({
@@ -28,6 +29,11 @@ export class UserService {
   update(user: User): Observable<Object> {
     return this.httpClient.post<Object>(`${this.apiUrl}/user/update`, user, this.httpOptions);
   }
+  uploadImage(id: number, image: any): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/user/${id}/uploadImage`, image, {
+        observe: 'response'
+    });
+  }
   getAllUser(): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.apiUrl}/user/getAllUser`, this.httpOptions);
   }
@@ -37,5 +43,7 @@ export class UserService {
   disableById(id: number): Observable<Object> {
     return this.httpClient.post<Object>(`${this.apiUrl}/user/disable/${id}`, this.httpOptions);
   } 
-
+  getCurrentUser(): Observable<Object> {
+    return this.httpClient.get<Object>(`${this.apiUrl}/user/getCurrentUser`, this.httpOptions);
+  }
 }
