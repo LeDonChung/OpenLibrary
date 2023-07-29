@@ -1,0 +1,212 @@
+package com.open.library.service.impl;
+
+import com.open.library.POJO.Book;
+import com.open.library.POJO.Category;
+import com.open.library.constraints.SystemConstraints;
+import com.open.library.jwt.JwtService;
+import com.open.library.mapper.BookMapper;
+import com.open.library.repository.AuthorRepository;
+import com.open.library.repository.BookRepository;
+import com.open.library.repository.CategoryRepository;
+import com.open.library.repository.PublisherRepository;
+import com.open.library.service.BookService;
+import com.open.library.utils.ImageUploadUtils;
+import com.open.library.utils.OpenLibraryUtils;
+import com.open.library.utils.request.BookDTO;
+import com.open.library.utils.response.BaseResponse;
+import com.open.library.utils.response.BookResponseDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class BookServiceImpl implements BookService {
+    private final BookRepository bookRepository;
+    private final ImageUploadUtils imageUploadUtils;
+    private final BookMapper bookMapper;
+    private final JwtService jwtService;
+
+    @Override
+    public ResponseEntity<BaseResponse> findAll() {
+        try {
+            List<Book> books = bookRepository.findAll();
+            List<BookResponseDTO> results = books.stream().map((author -> bookMapper.toResponseDTO(author))).collect(Collectors.toList());
+            return new ResponseEntity<>(
+                    OpenLibraryUtils.getResponse(results, true, String.valueOf(HttpStatus.OK.value())),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> save(MultipartFile bookCover, BookDTO bookDTO) {
+        try {
+            boolean isAdmin = jwtService.isAdmin();
+            if (isAdmin) {
+                String message = "";
+                Book book = null;
+                if (bookDTO.getId() == null) {
+                    book = bookMapper.toEntity(bookDTO);
+                    book.setRating(0);
+                    book.set_activated(true);
+                    book.set_deleted(false);
+                    message = "Thêm sách thành công.";
+                } else {
+                    Optional<Book> bookOld = bookRepository.findById(bookDTO.getId());
+                    if (!bookOld.isPresent()) {
+                        message = String.format("Sách có mã %d không tồn tại.", bookDTO.getId());
+                        return new ResponseEntity<>(
+                                OpenLibraryUtils.getResponse(message, false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                                HttpStatus.BAD_REQUEST
+                        );
+                    }
+                    book = bookMapper.toEntity(bookDTO, bookOld.get());
+                    message = String.format("Cập nhật sách có mã %d thành công.", bookDTO.getId());
+                }
+                // upload image
+                if (ObjectUtils.isEmpty(bookCover)) {
+                    if (bookDTO.getId() == null) {
+                        book.setBookCover(null);
+                    }
+                } else {
+                    // check existed
+                    if (!imageUploadUtils.checkExistedBookCover(bookCover)) {
+                        imageUploadUtils.uploadBookCover(bookCover);
+                    }
+                    book.setBookCover(Base64.getEncoder().encodeToString(bookCover.getBytes()));
+                }
+                bookRepository.save(book);
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(message, true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
+                        HttpStatus.UNAUTHORIZED
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> enable(Long id) {
+        try {
+            boolean isAdmin = jwtService.isAdmin();
+            if (isAdmin) {
+                Optional<Book> book = bookRepository.findById(id);
+                if (book.isPresent()) {
+                    Book bookEntity = book.get();
+                    bookEntity.set_deleted(false);
+                    bookEntity.set_activated(true);
+                    bookRepository.save(bookEntity);
+                    return new ResponseEntity<>(
+                            OpenLibraryUtils.getResponse(String.format("Bật sách có mã %d thành công.", id), true, String.valueOf(HttpStatus.OK.value())),
+                            HttpStatus.OK
+                    );
+                } else {
+                    return new ResponseEntity<>(
+                            OpenLibraryUtils.getResponse(String.format("Sách có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                            HttpStatus.BAD_REQUEST
+                    );
+                }
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
+                        HttpStatus.UNAUTHORIZED
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> disable(Long id) {
+        try {
+            boolean isAdmin = jwtService.isAdmin();
+            if (isAdmin) {
+                Optional<Book> book = bookRepository.findById(id);
+                if (book.isPresent()) {
+                    Book bookEntity = book.get();
+                    bookEntity.set_deleted(true);
+                    bookEntity.set_activated(false);
+                    bookRepository.save(bookEntity);
+                    return new ResponseEntity<>(
+                            OpenLibraryUtils.getResponse(String.format("Xóa sách có mã %d thành công.", id), true, String.valueOf(HttpStatus.OK.value())),
+                            HttpStatus.OK
+                    );
+                } else {
+                    return new ResponseEntity<>(
+                            OpenLibraryUtils.getResponse(String.format("Sách có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                            HttpStatus.BAD_REQUEST
+                    );
+                }
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
+                        HttpStatus.UNAUTHORIZED
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> findById(Long id) {
+        try {
+            Optional<Book> book = bookRepository.findById(id);
+            if (book.isPresent()) {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(bookMapper.toResponseDTO(book.get()), true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(String.format("Sách có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                        HttpStatus.BAD_REQUEST
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+}

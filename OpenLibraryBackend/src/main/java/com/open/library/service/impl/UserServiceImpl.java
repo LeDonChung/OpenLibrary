@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseResponse> getAllUser(PageDTO pageDTO) {
         List<UserResponseDTO> results = new ArrayList<>();
         try {
-            boolean isAdmin = jwtService.idAdmin();
+            boolean isAdmin = jwtService.isAdmin();
             if(isAdmin) {
                 Pageable pageable = PageRequest.of(pageDTO.getPageIndex(), pageDTO.getPageSize());
                 Role roleCustomer = roleRepository.findByCode("CUSTOMER");

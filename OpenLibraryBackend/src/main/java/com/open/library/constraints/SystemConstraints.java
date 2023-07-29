@@ -11,5 +11,5 @@ public class SystemConstraints {
     public static final Object REGISTER_ACCOUNT_SUCCESS = "Đăng kí tài khoản thành công.";
     public static final Object PASSWORD_NOT_MATCHES = "Mật khẩu nhập lại không chính xác.";
     public static final String INVALID_USERNAME_OR_PASSWORD = "Tài khoản hoặc mật khẩu không chính xác.";
-    public static final String ACCESS_DENIED = "Bạn không có quyền truy cập tài nguyên này.";
+    public static final String ACCESS_DENIED = "Bạn không có quyền này.";
 }

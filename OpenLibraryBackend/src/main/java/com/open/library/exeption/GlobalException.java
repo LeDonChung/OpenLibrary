@@ -1,6 +1,8 @@
 package com.open.library.exeption;
 
 import com.open.library.utils.response.BaseResponse;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class GlobalException extends ResponseEntityExceptionHandler {
+public class GlobalException extends ResponseEntityExceptionHandler{
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<BaseResponse> handlerResourceNotFound(ResourceNotFoundException ex) {
         BaseResponse baseResponse = BaseResponse

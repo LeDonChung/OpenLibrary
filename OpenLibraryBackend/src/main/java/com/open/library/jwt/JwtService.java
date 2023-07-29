@@ -14,7 +14,7 @@ public interface JwtService {
     String generateToken(UserDetailsCustom userDetailsCustom);
 
     boolean isValidToken(String token);
-    boolean idAdmin();
+    boolean isAdmin();
     boolean isUser();
     String getCurrentUser();
 }

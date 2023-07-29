@@ -121,7 +121,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean idAdmin() {
+    public boolean isAdmin() {
         List<String> authorities = claims.get("authorities", List.class);
         if(authorities.contains("ADMIN")) {
             return true;

@@ -1,11 +1,28 @@
 package com.open.library.utils;
 
-import com.open.library.utils.request.UserDTO;
+import com.open.library.utils.request.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ValidateObject {
+    public static Map<String, String> validateCategoryDTO(CategoryDTO dto) {
+        Map<String, String> errors = new HashMap<>();
+
+        errors.putAll(ValidateUtils.builder()
+                .fieldName("name")
+                .value(dto.getName())
+                .required(true)
+                .build().validate());
+
+        errors.putAll(ValidateUtils.builder()
+                .fieldName("code")
+                .value(dto.getCode())
+                .required(true)
+                .build().validate());
+        return errors;
+    }
+
     public static Map<String, String> validateUserDTO(UserDTO dto) {
         Map<String, String> errors = new HashMap<>();
 
@@ -33,7 +50,7 @@ public class ValidateObject {
         );
 
         String username = dto.getUsername();
-        if(username.contains("@")) {
+        if (username.contains("@")) {
             errors.putAll(ValidateUtils.builder()
                     .fieldName("username")
                     .value(username)
@@ -48,5 +65,107 @@ public class ValidateObject {
         }
         return errors;
 
+    }
+
+    public static Map<String, String> validateAuthorDTO(AuthorDTO dto) {
+        Map<String, String> errors = new HashMap<>();
+
+        errors.putAll(ValidateUtils.builder()
+                .fieldName("fullName")
+                .value(dto.getFullName())
+                .required(true)
+                .build().validate());
+
+        errors.putAll(ValidateUtils.builder()
+                .fieldName("story")
+                .value(dto.getStory())
+                .required(true)
+                .build().validate());
+        return errors;
+    }
+
+    public static Map<String, String> validateBookDTO(BookDTO dto) {
+        Map<String, String> errors = new HashMap<>();
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("title")
+                .value(dto.getTitle())
+                .required(true)
+                .build()
+                .validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("isbn")
+                .value(dto.getIsbn())
+                .required(true)
+                .isIsbn(true)
+                .build()
+                .validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("numberOfPages")
+                .value(dto.getNumberOfPages())
+                .required(true)
+                .isInteger(true)
+                .build().validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("description")
+                .value(dto.getDescription())
+                .required(true)
+                .build().validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("publishDate")
+                .value(dto.getPublishDate())
+                .required(true)
+                .build().validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("language")
+                .value(dto.getLanguage())
+                .required(true)
+                .build().validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("categories")
+                .value(dto.getCategories())
+                .required(true)
+                .build().validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("publisherId")
+                .value(dto.getPublisherId())
+                .required(true)
+                .build().validate()));
+
+        errors.putAll((ValidateUtils.builder()
+                .fieldName("authors")
+                .value(dto.getAuthors())
+                .required(true)
+                .build().validate()));
+        return errors;
+    }
+
+    public static Map<String, String> validatePublisherDTO(PublisherDTO dto) {
+        Map<String, String> errors = new HashMap<>();
+
+        errors.putAll(ValidateUtils.builder()
+                .fieldName("name")
+                .value(dto.getName())
+                .required(true)
+                .build().validate());
+
+        errors.putAll(ValidateUtils.builder()
+                .fieldName("address")
+                .value(dto.getAddress())
+                .required(true)
+                .build().validate());
+
+        errors.putAll(ValidateUtils.builder()
+                .fieldName("story")
+                .value(dto.getStory())
+                .required(true)
+                .build().validate());
+        return errors;
     }
 }

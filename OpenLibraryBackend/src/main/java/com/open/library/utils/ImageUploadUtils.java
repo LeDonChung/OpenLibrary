@@ -11,6 +11,7 @@ import java.nio.file.StandardCopyOption;
 @Component
 public class ImageUploadUtils {
     private final String UPLOAD_FOLDER_IMAGE_USER = "D:\\MyProject\\OpenLibrary\\OpenLibraryBackend\\src\\main\\resources\\static\\imageUser";
+    private final String UPLOAD_FOLDER_BOOK_COVER = "D:\\MyProject\\OpenLibrary\\OpenLibraryBackend\\src\\main\\resources\\static\\bookCover";
 
     public boolean checkExistedImageUser(MultipartFile imageUser) {
         boolean isExisted = false;
@@ -27,6 +28,28 @@ public class ImageUploadUtils {
         boolean isUpload = false;
         try {
             Files.copy(imageUser.getInputStream(), Paths.get(UPLOAD_FOLDER_IMAGE_USER + File.separator, imageUser.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
+            isUpload = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isUpload;
+    }
+
+    public boolean checkExistedBookCover(MultipartFile bookCover) {
+        boolean isExisted = false;
+        try {
+            File file = new File(UPLOAD_FOLDER_BOOK_COVER + File.separator, bookCover.getOriginalFilename());
+            isExisted = file.exists();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isExisted;
+    }
+
+    public boolean uploadBookCover(MultipartFile bookCover) {
+        boolean isUpload = false;
+        try {
+            Files.copy(bookCover.getInputStream(), Paths.get(UPLOAD_FOLDER_BOOK_COVER + File.separator, bookCover.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
             isUpload = true;
         } catch (Exception e) {
             e.printStackTrace();
