@@ -1,0 +1,189 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">
+    Quản lý sách
+    <button style="margin: 10px" mat-raised-button color="primary" (click)="onBack()">
+      <mat-icon>arrow_back</mat-icon>Quay lại
+    </button>
+  </div>
+  <div class="page__content shadow p-3 position-relative">
+    <div class="page__content-data">
+      <form [formGroup]="bookForm" fxFlex fxLayout="column">
+        <div fxFlex fxLayout="row">
+          <mat-form-field>
+            <mat-label>Tiêu đề</mat-label>
+            <input matInput formControlName="title" type="text" />
+            <mat-error *ngIf="bookForm.controls.title.touched && bookForm.controls.title.invalid">
+              <span *ngIf="bookForm.controls.title.errors.required">
+                Tên sách không thể bỏ trống. 
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>ISBN</mat-label>
+            <input [readonly]="action == 'view'" type="text" matInput formControlName="isbn" />
+            <mat-error *ngIf="
+                bookForm.controls.isbn.touched && bookForm.controls.isbn.invalid
+              ">
+              <span *ngIf="bookForm.controls.isbn.errors.required">
+                Mã ISBN không thể bỏ trống.
+              </span>
+              <span *ngIf="bookForm.controls.isbn.errors.pattern">
+                Mã ISBN không hợp lệ.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex fxLayout="row">
+          <mat-form-field>
+            <mat-label>Số trang</mat-label>
+            <input [readonly]="action == 'view'" type="number" matInput formControlName="numberOfPages" />
+            <mat-error *ngIf="
+                bookForm.controls.numberOfPages.touched &&
+                bookForm.controls.numberOfPages.invalid
+              ">
+              <span *ngIf="bookForm.controls.numberOfPages.errors.required">
+                Số trang không thể bỏ trống.
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Ngôn ngữ</mat-label>
+            <input [readonly]="action == 'view'" type="text" matInput formControlName="language" />
+            <mat-error *ngIf="
+                bookForm.controls.language.touched &&
+                bookForm.controls.language.invalid
+              ">
+              <span *ngIf="bookForm.controls.language.errors.required">
+                Ngôn ngữ không thể bỏ trống.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex fxLayout="row">
+          <label class="btn-upload">
+            <input type="file" name="fileupload" (change)="onViewImage($event)" />
+            <button class="btn">Chọn hình ảnh</button>
+            <img [src]="!isImg ? imgUrl : 'data:image/jpeg;base64,' + book.bookCover" />
+          </label>
+        </div>
+        <div fxFlex fxLayout="column" class="descriptions">
+          <button class="btn btn-primary description">Mô tả</button>
+          <ckeditor [editor]="editor" formControlName="description"></ckeditor>
+          <mat-error *ngIf="
+              bookForm.controls.description.touched &&
+              bookForm.controls.description.invalid
+            ">
+            <span *ngIf="bookForm.controls.description.errors.required">
+              Mô tả không thể bỏ trống.
+            </span>
+          </mat-error>
+        </div>
+        <div fxFlex fxLayout="row">
+          <mat-form-field>
+            <mat-label>Ngày phát hành</mat-label>
+            <input [readonly]="action == 'view'" matInput [matDatepicker]="picker" formControlName="publishDate" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="
+                bookForm.controls.publishDate.touched &&
+                bookForm.controls.publishDate.invalid
+              ">
+              <span *ngIf="bookForm.controls.publishDate.errors.required">
+                Ngày phát hành không thể bỏ trống.
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Nhà sản xuất</mat-label>
+            <mat-select formControlName="publisher">
+              <mat-option *ngFor="let publisher of publishers" [value]="publisher.id">
+                {{ publisher.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="
+                bookForm.controls.publisher.touched &&
+                bookForm.controls.publisher.invalid
+              ">
+              <span *ngIf="bookForm.controls.publisher.errors.required">
+                Nhà sản xuất không thể bỏ trống.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex fxLayout="column">
+          <ng-container formArrayName="authors">
+            <ng-container *ngFor="let authorFormElement of authorForms.controls; let i = index">
+              <div fxFlex fxLayout="row" [formGroup]="authorFormElement">
+                <mat-form-field>
+                  <mat-label>Tác giả</mat-label>
+                  <mat-select formControlName="id">
+                    <mat-option *ngFor="let author of authors" [value]="author.id">
+                      {{ author.fullName }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="
+                      bookForm.controls.authors.touched &&
+                      bookForm.controls.authors.invalid
+                    ">
+                    <span *ngIf="bookForm.controls.authors.errors.required">
+                      Tác giả không thể bỏ trống.
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+
+                <button [disabled]="action == 'view'" mat-icon-button color="primary" (click)="removeAuthor(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+            </ng-container>
+            <button [disabled]="action == 'view'" class="btnAction" mat-raised-button color="primary"
+              (click)="addAuthor(-1)">
+              <mat-icon>add</mat-icon> Thêm tác giả
+            </button>
+          </ng-container>
+        </div>
+        <div fxFlex fxLayout="column">
+          <ng-container formArrayName="categories">
+            <ng-container *ngFor="let categoryFormElement of categoryForms.controls; let i = index">
+              <div fxFlex fxLayout="row" [formGroup]="categoryFormElement">
+                <mat-form-field>
+                  <mat-label>Thể loại</mat-label>
+                  <mat-select formControlName="id">
+                    <mat-option *ngFor="let category of categories" [value]="category.id">
+                      {{ category.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="
+                      bookForm.controls.categories.touched &&
+                      bookForm.controls.categories.invalid
+                    ">
+                    <span *ngIf="bookForm.controls.categories.errors.required">
+                      Thể loại không thể bỏ trống.
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+                <button [disabled]="action == 'view'" mat-icon-button color="primary" (click)="removeCategory(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </ng-container>
+            <button [disabled]="action == 'view'" class="btnAction" mat-raised-button color="primary"
+              (click)="addCategory(-1)">
+              <mat-icon>add</mat-icon> Thêm thể loại
+            </button>
+          </ng-container>
+        </div>
+        <button *ngIf="action == 'add'" [disabled]="!(bookForm.valid && bookForm.dirty)" mat-raised-button
+          class="btnAction" color="primary" type="submit" (click)="handlerAddSubmit()">
+          <mat-icon>save</mat-icon> Thêm
+        </button>
+        <button *ngIf="action == 'update'" [disabled]="!(bookForm.valid && bookForm.dirty)" mat-raised-button
+          class="btnAction" color="primary" type="submit" (click)="handlerUpdateSubmit()">
+          <mat-icon>save</mat-icon> Cập nhật
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

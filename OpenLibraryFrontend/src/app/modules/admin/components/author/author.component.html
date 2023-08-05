@@ -1,0 +1,55 @@
+<div class="container-fluid page">
+    <div class="d-flex page__box p-3 mt-2">
+        Quản lý tác giả
+        <button style="margin: 10px;" mat-raised-button color="primary" (click)="onAdd()">
+            <mat-icon>add</mat-icon> Thêm
+        </button>
+    </div>
+    <div class="page__content shadow p-3 position-relative">
+      <div class="page__content-data">
+        <mat-table #table [dataSource]="page.dataSource">
+            <ng-container matColumnDef="position">
+                <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
+                <mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="fullName">
+                <mat-header-cell *matHeaderCellDef>Tên</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.fullName }}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="image">
+                <mat-header-cell *matHeaderCellDef>Hình ảnh</mat-header-cell>
+                <mat-cell *matCellDef="let element"> 
+                    <img style="width: 50px; height: 50px; margin: auto;" [src]="element.image == null ? '' : 'data:image/jpeg;base64,' + element.image">
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button *ngIf="element._activated == false && element._deleted == true" mat-icon-button color="primary" (click)="enable(element)">
+                        <mat-icon>check_circle</mat-icon>
+                    </button>
+                    <button *ngIf="element._activated == true && element._deleted == false" mat-icon-button color="warn" (click)="disable(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="onView(element)">
+                        <mat-icon>info</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="onUpdate(element)">
+                        <mat-icon>system_update</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator
+                [length]="page.length"
+                [pageIndex]="page.pageIndex"
+                [pageSize]="page.pageSize"
+                [pageSizeOptions]="[]"
+                (page)="loadData($event)"
+                >
+        </mat-paginator>
+      </div>
+    </div>
+  </div>

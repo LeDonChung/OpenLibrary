@@ -7,8 +7,7 @@ import com.open.library.utils.ValidateObject;
 import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
-import com.open.library.utils.response.PageResponseDTO;
-import com.open.library.utils.response.UserResponseDTO;
+import com.open.library.utils.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class UserController {
 
         return new ResponseEntity<>(
                 OpenLibraryUtils.getResponse(
-                        PageResponseDTO.builder().length(0).pageIndex(0)
+                        PageUtils.builder().length(0).pageIndex(0)
                                 .dataSource(new ArrayList<>()).build()
                         , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR

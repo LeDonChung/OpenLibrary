@@ -30,7 +30,7 @@ public class BookMapper {
         book.setLanguage(dto.getLanguage());
         book.setAuthors(authorRepository.findAllById(dto.getAuthors()));
         book.setCategories(categoryRepository.findAllById(dto.getCategories()));
-        book.setPublisher(publisherRepository.findById(dto.getPublisherId()).get());
+        book.setPublisher(publisherRepository.findById(dto.getPublisher()).get());
         return book;
     }
 
@@ -68,7 +68,7 @@ public class BookMapper {
         bookOld.setLanguage(bookDTO.getLanguage());
         bookOld.setAuthors(authorRepository.findAllById(bookDTO.getAuthors()));
         bookOld.setCategories(categoryRepository.findAllById(bookDTO.getCategories()));
-        bookOld.setPublisher(publisherRepository.findById(bookDTO.getPublisherId()).get());
+        bookOld.setPublisher(publisherRepository.findById(bookDTO.getPublisher()).get());
         return bookOld;
     }
 }

@@ -10,6 +10,7 @@ export class SystemConstraints {
     // REGEX
     public static REGEX_EMAIL: string = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
     public static REGEX_PHONE:string = "^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$";
+    public static REGEX_ISBN:string = "^(?=(?:[^0-9]*[0-9]){10}(?:(?:[^0-9]*[0-9]){3})?$)[\\d-]+$"
     // Varible
     public static ERROR:string = "error";
     // Enviroment

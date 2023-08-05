@@ -13,18 +13,31 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { UserComponent } from './components/user/user.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
 import { ConfirmationComponent } from './components/dialog/confirmation/confirmation.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatChipsModule} from '@angular/material/chips';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProfileComponent } from './components/profile/profile.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CategoryComponent } from './components/category/category.component';
+import { CategoryDialogComponent } from './components/dialog/category-dialog/category-dialog.component';
+import { PublisherDialogComponent } from './components/dialog/publisher-dialog/publisher-dialog.component';
+import { PublisherComponent } from './components/publisher/publisher.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { AuthorComponent } from './components/author/author.component';
+import { AuthorDialogComponent } from './components/dialog/author-dialog/author-dialog.component';
+import { BookComponent } from './components/book/book.component';
+import { EditBookComponent } from './components/edit-book/edit-book.component';
+import { MatSelectModule } from '@angular/material/select';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text: 'Loading',
@@ -48,6 +61,14 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     UserComponent,
     ConfirmationComponent,
     ProfileComponent,
+    CategoryComponent,
+    CategoryDialogComponent,
+    PublisherDialogComponent,
+    PublisherComponent,
+    AuthorComponent,
+    AuthorDialogComponent,
+    BookComponent,
+    EditBookComponent,
   ],
   imports: [
     CommonModule,
@@ -68,9 +89,15 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatPaginatorModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatOptionModule,
     MatDialogModule,
     MatTableModule,
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    CKEditorModule,
   ]
 })
 export class AdminModule { }

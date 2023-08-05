@@ -75,7 +75,7 @@ export class UserComponent implements OnInit {
       this.userService.enableById(user.id).subscribe((res: any) => {
         this.ngxService.stop();
         this.snackbarService.open(res.data, 'success');
-        this.loadData(null);
+        this.loadData(this.page);
       }, (errors: any) => {
         console.log(errors);
         let error = errors.error;
@@ -107,7 +107,7 @@ export class UserComponent implements OnInit {
       this.userService.disableById(user.id).subscribe((res: any) => {
         this.ngxService.stop();
         this.snackbarService.open(res.data, 'success');
-        this.loadData(null);
+        this.loadData(this.page);
       }, (errors: any) => {
         console.log(errors);
         let error = errors.error;

@@ -20,6 +20,8 @@ public class PublisherMapper {
         dto.setName(publisher.getName());
         dto.setAddress(publisher.getAddress());
         dto.setStory(publisher.getStory());
+        dto.set_deleted(publisher.is_deleted());
+        dto.set_activated(publisher.is_activated());
         return dto;
     }
 
@@ -27,8 +29,6 @@ public class PublisherMapper {
         publisherOld.setName(publisherDTO.getName());
         publisherOld.setStory(publisherDTO.getStory());
         publisherOld.setAddress(publisherDTO.getAddress());
-        publisherOld.set_deleted(publisherOld.is_deleted());
-        publisherOld.set_activated(publisherDTO.is_activated());
         return publisherOld;
     }
 }

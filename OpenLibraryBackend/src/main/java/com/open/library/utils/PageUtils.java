@@ -1,28 +1,29 @@
-package com.open.library.utils.response;
+package com.open.library.utils;
 
 import com.open.library.utils.request.PageDTO;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Data
 @Builder
-public class PageResponseDTO<T> {
+public class PageUtils {
     private int length;
 
     private int pageIndex;
 
     private int pageSize;
 
-    private List<T> dataSource;
+    private List<Object> dataSource;
 
 
-    public static PageResponseDTO getPage(PageDTO pageDTO, List<UserResponseDTO> results, long count) {
-        return PageResponseDTO
+    public static PageUtils getPage(PageDTO pageDTO, List<Object> results, int count) {
+        return PageUtils
                 .builder()
-                .length((int) count)
+                .length(count)
                 .pageSize(pageDTO.getPageSize())
                 .pageIndex(pageDTO.getPageIndex())
                 .dataSource(Arrays.asList(results.toArray()))

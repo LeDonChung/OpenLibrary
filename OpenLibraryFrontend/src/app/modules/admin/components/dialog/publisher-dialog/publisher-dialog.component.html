@@ -1,0 +1,52 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span>{{ action }} nhà xuất bản</span>
+        <span class="spacer"></span>
+        <button mat-dialog-close mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="publisherForm">
+        <div fxFlex fxLayout="column"> 
+            <mat-form-field fxFlex *ngIf="dialogAction !== 'add'">
+                <mat-label>ID</mat-label>
+                <input matInput formControlName="id" readonly/>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>Tên</mat-label>
+                <input matInput formControlName="name" required [readonly]="dialogAction === 'view'"/>
+                <mat-error *ngIf="publisherForm.controls.name.touched && publisherForm.controls.name.invalid">
+                    <span *ngIf="publisherForm.controls.name.errors.required">
+                        Tên nhà xuất bản không thể bỏ trống.
+                    </span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label> Địa chỉ</mat-label>
+                <input matInput formControlName="address" required [readonly]="dialogAction === 'view'"/>
+                <mat-error *ngIf="publisherForm.controls.address.touched && publisherForm.controls.address.invalid">
+                    <span *ngIf="publisherForm.controls.address.errors.required">
+                        Địa chỉ nhà xuất bản không thể bỏ trống.
+                    </span>
+                </mat-error>
+            </mat-form-field>
+            <ckeditor [editor]="editor" formControlName="story" ></ckeditor>
+                <mat-error *ngIf="publisherForm.controls.story.touched && publisherForm.controls.story.invalid">
+                    <span *ngIf="publisherForm.controls.story.errors.required">
+                        Tiểu sử nhà xuất bản không thể bỏ trống.
+                    </span>
+                </mat-error> 
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button *ngIf="dialogAction !== 'view'" mat-raised-button color="primary" type="submit" (click)="handlerSubmit()"
+        [disabled]="!(publisherForm.valid && publisherForm.dirty)">
+        <mat-icon>save</mat-icon> {{ action }}
+    </button>
+    <button mat-raised-button color="warn" type="submit" mat-dialog-close>
+        <mat-icon>cancel</mat-icon> Close
+    </button>
+</mat-dialog-actions>

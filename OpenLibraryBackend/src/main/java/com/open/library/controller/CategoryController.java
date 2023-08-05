@@ -5,13 +5,15 @@ import com.open.library.service.CategoryService;
 import com.open.library.utils.OpenLibraryUtils;
 import com.open.library.utils.ValidateObject;
 import com.open.library.utils.request.CategoryDTO;
+import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.response.BaseResponse;
+import com.open.library.utils.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -28,6 +30,21 @@ public class CategoryController {
         }
         return new ResponseEntity<>(
                 OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+    @PostMapping("/getPages")
+    public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO) {
+        try {
+            return categoryService.getPages(pageDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(
+                        PageUtils.builder().length(0).pageIndex(0)
+                                .dataSource(new ArrayList<>()).build()
+                        , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

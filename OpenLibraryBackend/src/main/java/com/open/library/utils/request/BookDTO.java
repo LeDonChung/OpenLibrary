@@ -29,7 +29,7 @@ public class BookDTO {
 
     private Collection<Long> authors;
 
-    private Long publisherId;
+    private Long publisher;
 
     private boolean is_activated;
 

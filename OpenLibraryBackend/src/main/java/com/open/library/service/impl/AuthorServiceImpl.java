@@ -1,25 +1,28 @@
 package com.open.library.service.impl;
 
 import com.open.library.POJO.Author;
-import com.open.library.POJO.Category;
 import com.open.library.constraints.SystemConstraints;
 import com.open.library.jwt.JwtService;
 import com.open.library.mapper.AuthorMapper;
 import com.open.library.repository.AuthorRepository;
 import com.open.library.service.AuthorService;
+import com.open.library.utils.ImageUploadUtils;
 import com.open.library.utils.OpenLibraryUtils;
+import com.open.library.utils.PageUtils;
 import com.open.library.utils.request.AuthorDTO;
+import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.response.AuthorResponseDTO;
 import com.open.library.utils.response.BaseResponse;
-import com.open.library.utils.response.CategoryResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +31,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     private final JwtService jwtService;
     private final AuthorMapper authorMapper;
+    private final ImageUploadUtils imageUploadUtils;
 
     @Override
     public ResponseEntity<BaseResponse> findAll() {
@@ -48,7 +52,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse> save(AuthorDTO authorDTO) {
+    public ResponseEntity<BaseResponse> save(MultipartFile image, AuthorDTO authorDTO) {
         try {
             boolean isAdmin = jwtService.isAdmin();
             if (isAdmin) {
@@ -70,6 +74,18 @@ public class AuthorServiceImpl implements AuthorService {
                     }
                     author = authorMapper.toEntity(authorDTO, authorOld.get());
                     message = String.format("Cập nhật tác giả có mã %d thành công.", authorDTO.getId());
+                }
+                // upload image
+                if (ObjectUtils.isEmpty(image)) {
+                    if (authorDTO.getId() == null) {
+                        author.setImage(null);
+                    }
+                } else {
+                    // check existed
+                    if (!imageUploadUtils.checkExistedImageAuthor(image)) {
+                        imageUploadUtils.uploadImageAuthor(image);
+                    }
+                    author.setImage(Base64.getEncoder().encodeToString(image.getBytes()));
                 }
                 authorRepository.save(author);
                 return new ResponseEntity<>(
@@ -190,6 +206,30 @@ public class AuthorServiceImpl implements AuthorService {
         }
         return new ResponseEntity<>(
                 OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getPages(PageDTO pageDTO) {
+        try {
+            Pageable pageable = PageRequest.of(pageDTO.getPageIndex(), pageDTO.getPageSize());
+            List<Author> authors = authorRepository.findAll(pageable).stream().toList();
+            List<AuthorResponseDTO> results = authors.stream().map((author -> authorMapper.toResponseDTO(author))).collect(Collectors.toList());
+            return new ResponseEntity<>(
+                    OpenLibraryUtils.getResponse(
+                            PageUtils.getPage(pageDTO, Arrays.asList(results.toArray()), (int) authorRepository.count())
+                            , true, String.valueOf(HttpStatus.OK.value())),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(
+                        PageUtils.builder().length(0).pageIndex(0)
+                                .dataSource(new ArrayList<>()).build()
+                        , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

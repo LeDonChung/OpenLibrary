@@ -8,15 +8,21 @@ import com.open.library.mapper.PublisherMapper;
 import com.open.library.repository.PublisherRepository;
 import com.open.library.service.PublisherService;
 import com.open.library.utils.OpenLibraryUtils;
+import com.open.library.utils.PageUtils;
+import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.PublisherDTO;
 import com.open.library.utils.response.BaseResponse;
 import com.open.library.utils.response.CategoryResponseDTO;
 import com.open.library.utils.response.PublisherResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -195,6 +201,30 @@ public class PublisherServiceImpl implements PublisherService {
         }
         return new ResponseEntity<>(
                 OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getPages(PageDTO pageDTO) {
+        try {
+            Pageable pageable = PageRequest.of(pageDTO.getPageIndex(), pageDTO.getPageSize());
+            List<Publisher> publishers = publisherRepository.findAll(pageable).stream().toList();
+            List<PublisherResponseDTO> results = publishers.stream().map((publisher -> publisherMapper.toResponseDTO(publisher))).collect(Collectors.toList());
+            return new ResponseEntity<>(
+                    OpenLibraryUtils.getResponse(
+                            PageUtils.getPage(pageDTO, Arrays.asList(results.toArray()), (int) publisherRepository.count())
+                            , true, String.valueOf(HttpStatus.OK.value())),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(
+                        PageUtils.builder().length(0).pageIndex(0)
+                                .dataSource(new ArrayList<>()).build()
+                        , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

@@ -1,0 +1,90 @@
+<div class="container-fluid page">
+    <div class="d-flex page__box p-3 mt-2">
+        Quản lý sách
+        <button style="margin: 10px;" mat-raised-button color="primary" (click)="onAdd()">
+            <mat-icon>add</mat-icon> Thêm
+        </button>
+    </div>
+    <div class="page__content shadow p-3 position-relative">
+      <div class="page__content-data">
+        <mat-table #table [dataSource]="page.dataSource">
+            <ng-container matColumnDef="title">
+                <mat-header-cell *matHeaderCellDef>Tiêu đề</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.title }}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="bookCover">
+                <mat-header-cell *matHeaderCellDef>Hình ảnh</mat-header-cell>
+                <mat-cell *matCellDef="let element"> 
+                    <img style="width: 50px; height: 50px; margin: auto;" [src]="element.bookCover == '' ? '': 'data:image/jpeg;base64,' + element.bookCover" alt="">
+                </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="categories">
+                <mat-header-cell *matHeaderCellDef>Thể loại</mat-header-cell>
+                <mat-cell *matCellDef="let element"> 
+                    <mat-chip-listbox>
+                        <mat-chip *ngFor="let category of element.categories">
+                            {{ category.name }}
+                        </mat-chip>
+                    </mat-chip-listbox>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="authors">
+                <mat-header-cell *matHeaderCellDef>Tác giả</mat-header-cell>
+                <mat-cell *matCellDef="let element"> 
+                    <mat-chip-listbox>
+                        <mat-chip *ngFor="let author of element.authors">
+                            {{ author.fullName }}
+                        </mat-chip>
+                    </mat-chip-listbox>
+                </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="isbn">
+                <mat-header-cell *matHeaderCellDef>ISBN</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.isbn }}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="language">
+                <mat-header-cell *matHeaderCellDef>Ngôn ngữ</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.language }}  </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="publisher">
+                <mat-header-cell *matHeaderCellDef>Nhà xuất bản</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.publisher.name }}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button *ngIf="element._activated == false && element._deleted == true" mat-icon-button color="primary" (click)="enable(element)">
+                        <mat-icon>check_circle</mat-icon>
+                    </button>
+                    <button *ngIf="element._activated == true && element._deleted == false" mat-icon-button color="warn" (click)="disable(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="onView(element)">
+                        <mat-icon>info</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="onUpdate(element)">
+                        <mat-icon>system_update</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="remove(element)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>  
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator
+                [length]="page.length"
+                [pageIndex]="page.pageIndex"
+                [pageSize]="page.pageSize"
+                [pageSizeOptions]="[]"
+                (page)="loadData($event)"
+                >
+        </mat-paginator>
+      </div>
+    </div>
+  </div>

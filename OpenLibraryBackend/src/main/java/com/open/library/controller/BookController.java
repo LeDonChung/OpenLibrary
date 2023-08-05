@@ -9,6 +9,7 @@ import com.open.library.utils.OpenLibraryUtils;
 import com.open.library.utils.ValidateObject;
 import com.open.library.utils.request.BookDTO;
 import com.open.library.utils.request.CategoryDTO;
+import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,18 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
-
+    @PostMapping("/getPages")
+    public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO) {
+        try {
+            return bookService.getPages(pageDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
     @PostMapping("/insert")
     public ResponseEntity<BaseResponse> insertOne(@RequestParam("bookCover") MultipartFile bookCover, @RequestParam("bookDto") String bookDto) {
         try {
@@ -107,6 +119,18 @@ public class BookController {
     public ResponseEntity<BaseResponse> findById(@PathVariable Long id) {
         try {
             return bookService.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<BaseResponse> removeForever(@PathVariable Long id) {
+        try {
+            return bookService.remove(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

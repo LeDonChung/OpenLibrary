@@ -1,0 +1,53 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span>{{ action }} thể loại</span>
+        <span class="spacer"></span>
+        <button mat-dialog-close mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="authorForm">
+        <div fxFlex fxLayout="column"> 
+            <mat-form-field fxFlex *ngIf="dialogAction !== 'add'">
+                <mat-label>ID</mat-label>
+                <input matInput formControlName="id" readonly/>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>Họ và tên</mat-label>
+                <input matInput formControlName="fullName" required [readonly]="dialogAction === 'view'"/>
+                <mat-error *ngIf="authorForm.controls.fullName.touched && authorForm.controls.fullName.invalid">
+                    <span *ngIf="authorForm.controls.fullName.errors.required">
+                        Tên tác giả không thể bỏ trống.
+                    </span>
+                </mat-error>
+            </mat-form-field> 
+            <div>
+                <ckeditor [editor]="editor" formControlName="story"></ckeditor>
+                <mat-error *ngIf="authorForm.controls.story.touched && authorForm.controls.story.invalid">
+                    <span *ngIf="authorForm.controls.story.errors.required">
+                        Tiểu sử tác giả không thể bỏ trống.
+                    </span>
+                </mat-error> 
+            </div>
+            <div>
+                <h4  style="color: #000;">Hình ảnh</h4>
+                <label class="btn-upload">
+                    <input [disabled]="dialogAction === 'view'" type="file" name="fileupload" (change)="onViewImage($event)">
+                    <button class="btn">Choose Image</button>
+                    <img [src]="!isImg  ? imgUrl : 'data:image/jpeg;base64,' + this.dialogData.data.image" style="width: 200px; height: 200px;">
+                </label>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button *ngIf="dialogAction !== 'view'" mat-raised-button color="primary" type="submit" (click)="handlerSubmit()"
+        [disabled]="!(authorForm.valid && authorForm.dirty)">
+        <mat-icon>save</mat-icon> {{ action }}
+    </button>
+    <button mat-raised-button color="warn" type="submit" mat-dialog-close>
+        <mat-icon>cancel</mat-icon> Close
+    </button>
+</mat-dialog-actions>

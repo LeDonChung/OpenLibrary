@@ -133,8 +133,8 @@ public class ValidateObject {
                 .build().validate()));
 
         errors.putAll((ValidateUtils.builder()
-                .fieldName("publisherId")
-                .value(dto.getPublisherId())
+                .fieldName("publisher")
+                .value(dto.getPublisher())
                 .required(true)
                 .build().validate()));
 
