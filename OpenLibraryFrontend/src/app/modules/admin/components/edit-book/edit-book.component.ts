@@ -183,9 +183,8 @@ export class EditBookComponent implements OnInit {
       return value.id;
     });
 
-    formData.append('bookCover', this.uploadImage);
+    formData.append('bookCover', this.uploadImage !== undefined ? this.uploadImage : '');
     formData.append('bookDto', JSON.stringify(book));
-
     this.bookService.insertOne(formData).subscribe((res: any) => {
       this.ngxService.stop();
       this.responseMessage = res.body.data;
@@ -215,7 +214,7 @@ export class EditBookComponent implements OnInit {
       return value.id;
     });
 
-    formData.append('bookCover', this.uploadImage, this.uploadImage.name);
+    formData.append('bookCover', this.uploadImage !== undefined ? this.uploadImage : '');
     formData.append('bookDto', JSON.stringify(this.book));
 
     this.bookService.insertOne(formData).subscribe((res: any) => {

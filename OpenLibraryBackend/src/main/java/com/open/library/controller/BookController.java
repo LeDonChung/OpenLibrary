@@ -49,7 +49,7 @@ public class BookController {
         );
     }
     @PostMapping("/insert")
-    public ResponseEntity<BaseResponse> insertOne(@RequestParam("bookCover") MultipartFile bookCover, @RequestParam("bookDto") String bookDto) {
+    public ResponseEntity<BaseResponse> insertOne(@RequestParam(value = "contentPdf", required = false) MultipartFile contentPdf, @RequestParam(value = "bookCover", required = false) MultipartFile bookCover, @RequestParam("bookDto") String bookDto) {
         try {
             BookDTO bookDTO = (BookDTO) OpenLibraryUtils.getRequest(bookDto, BookDTO.class);
             Map<String, String> errors = ValidateObject.validateBookDTO(bookDTO);
@@ -59,7 +59,7 @@ public class BookController {
                         HttpStatus.BAD_REQUEST
                 );
             }
-            return bookService.save(bookCover, bookDTO);
+            return bookService.save(contentPdf, bookCover, bookDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class BookController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<BaseResponse> update(@RequestParam("bookCover") MultipartFile bookCover, @RequestParam("bookDto") String bookDto) {
+    public ResponseEntity<BaseResponse> update(@RequestParam(value = "contentPdf", required = false) MultipartFile contentPdf, @RequestParam(value = "bookCover", required = false) MultipartFile bookCover, @RequestParam("bookDto") String bookDto) {
         try {
             BookDTO bookDTO = (BookDTO) OpenLibraryUtils.getRequest(bookDto, BookDTO.class);
             Map<String, String> errors = ValidateObject.validateBookDTO(bookDTO);
@@ -80,7 +80,7 @@ public class BookController {
                         HttpStatus.BAD_REQUEST
                 );
             }
-            return bookService.save(bookCover, bookDTO);
+            return bookService.save(contentPdf, bookCover, bookDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -62,8 +62,7 @@ export class AuthorDialogComponent {
   add() {
     const formData = new FormData();
     let data: Author = this.authorForm.value;
-    formData.append('image', this.uploadImage, this.uploadImage.name);
-
+    formData.append('image', this.uploadImage !== undefined ? this.uploadImage : '');
     formData.append('authorDto', JSON.stringify(data));
     this.authorService.insertOne(formData).subscribe((res: any) => {
       this.dialogRef.close();
@@ -84,8 +83,7 @@ export class AuthorDialogComponent {
   edit() {
     const formData = new FormData();
     let data: Author = this.authorForm.value;
-    formData.append('image', this.uploadImage, this.uploadImage.name);
-
+    formData.append('image', this.uploadImage !== undefined ? this.uploadImage : '');
     formData.append('authorDto', JSON.stringify(data));
     this.authorService.updateOne(formData).subscribe((res: any) => {
       this.dialogRef.close();

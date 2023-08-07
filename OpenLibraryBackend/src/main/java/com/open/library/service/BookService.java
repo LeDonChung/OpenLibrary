@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface BookService {
     ResponseEntity<BaseResponse> findAll();
 
-    ResponseEntity<BaseResponse> save(MultipartFile bookCover, BookDTO bookDTO);
+    ResponseEntity<BaseResponse> save(MultipartFile contentPdf, MultipartFile bookCover, BookDTO bookDTO);
 
     ResponseEntity<BaseResponse> enable(Long id);
 
@@ -20,4 +20,5 @@ public interface BookService {
     ResponseEntity<BaseResponse> getPages(PageDTO pageDTO);
 
     ResponseEntity<BaseResponse> remove(Long id);
+
 }

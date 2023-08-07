@@ -50,7 +50,7 @@ public class AuthorController {
         );
     }
     @PostMapping("/insert")
-    public ResponseEntity<BaseResponse> insertOne(@RequestParam("image") MultipartFile image, @RequestParam("authorDto") String authorDto) {
+    public ResponseEntity<BaseResponse> insertOne(@RequestParam(value = "image", required = false) MultipartFile image, @RequestParam("authorDto") String authorDto) {
         try {
             System.out.println(image);
             System.out.println(authorDto);
@@ -74,7 +74,7 @@ public class AuthorController {
         );
     }
     @PostMapping("/update")
-    public ResponseEntity<BaseResponse> updateOne(@RequestParam("image") MultipartFile image, @RequestParam("authorDto") String authorDto) {
+    public ResponseEntity<BaseResponse> updateOne(@RequestParam(value = "image", required = false) MultipartFile image, @RequestParam("authorDto") String authorDto) {
         try {
             AuthorDTO authorDTO = (AuthorDTO) OpenLibraryUtils.getRequest(authorDto, AuthorDTO.class);
             Map<String, String> errors = ValidateObject.validateAuthorDTO(authorDTO);

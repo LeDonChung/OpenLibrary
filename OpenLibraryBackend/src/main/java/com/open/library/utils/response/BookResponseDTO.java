@@ -29,6 +29,8 @@ public class BookResponseDTO {
 
     private boolean is_deleted;
 
+    private String contentPdf;
+
     private Collection<CategoryResponseDTO> categories;
 
     private Collection<AuthorResponseDTO> authors;

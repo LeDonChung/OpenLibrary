@@ -47,6 +47,7 @@ public class BookMapper {
         dto.setLanguage(book.getLanguage());
         dto.set_activated(book.is_activated());
         dto.set_deleted(book.is_deleted());
+        dto.setContentPdf(book.getContentPdf());
         if (book.getPublisher() != null) {
             dto.setPublisher(publisherMapper.toResponseDTO(book.getPublisher()));
         }

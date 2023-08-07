@@ -31,6 +31,8 @@ public class BookDTO {
 
     private Long publisher;
 
+    private String contentPdf;
+
     private boolean is_activated;
 
     private boolean is_deleted;

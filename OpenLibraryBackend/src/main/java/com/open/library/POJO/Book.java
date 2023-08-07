@@ -46,6 +46,9 @@ public class Book {
     private boolean is_activated;
 
     private boolean is_deleted;
+
+    private String contentPdf;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "categories_books", joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "category_id"))
@@ -59,4 +62,5 @@ public class Book {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     private Publisher publisher;
+
 }

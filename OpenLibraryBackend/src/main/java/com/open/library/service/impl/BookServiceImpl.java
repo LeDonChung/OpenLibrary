@@ -1,15 +1,12 @@
 package com.open.library.service.impl;
 
 import com.open.library.POJO.Book;
-import com.open.library.POJO.Category;
 import com.open.library.constraints.SystemConstraints;
 import com.open.library.jwt.JwtService;
 import com.open.library.mapper.BookMapper;
-import com.open.library.repository.AuthorRepository;
 import com.open.library.repository.BookRepository;
-import com.open.library.repository.CategoryRepository;
-import com.open.library.repository.PublisherRepository;
 import com.open.library.service.BookService;
+import com.open.library.service.FirebaseService;
 import com.open.library.utils.ImageUploadUtils;
 import com.open.library.utils.OpenLibraryUtils;
 import com.open.library.utils.PageUtils;
@@ -17,7 +14,6 @@ import com.open.library.utils.request.BookDTO;
 import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.response.BaseResponse;
 import com.open.library.utils.response.BookResponseDTO;
-import com.open.library.utils.response.CategoryResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +36,7 @@ public class BookServiceImpl implements BookService {
     private final ImageUploadUtils imageUploadUtils;
     private final BookMapper bookMapper;
     private final JwtService jwtService;
+    private final FirebaseService firebaseService;
 
     @Override
     public ResponseEntity<BaseResponse> findAll() {
@@ -60,7 +57,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse> save(@RequestParam(value = "bookCover", required = false) MultipartFile bookCover, BookDTO bookDTO) {
+    public ResponseEntity<BaseResponse> save(MultipartFile contentPdf, MultipartFile bookCover, BookDTO bookDTO) {
         try {
             boolean isAdmin = jwtService.isAdmin();
             if (isAdmin) {
@@ -95,6 +92,30 @@ public class BookServiceImpl implements BookService {
                         imageUploadUtils.uploadBookCover(bookCover);
                     }
                     book.setBookCover(Base64.getEncoder().encodeToString(bookCover.getBytes()));
+                }
+                // upload content pdf
+                if(ObjectUtils.isEmpty(contentPdf)) {
+                    if(bookDTO.getId() == null) {
+                        book.setContentPdf("");
+                    }
+                } else {
+
+                    String fileName = contentPdf.getOriginalFilename();
+
+                    if(bookDTO.getId() == null) {
+                        fileName = firebaseService.uploadFile(contentPdf).toString();
+                    } else {
+                        if(!book.getContentPdf().contains(fileName)) {
+                            // check not exist
+                            // upload new
+                            fileName = firebaseService.uploadFile(contentPdf).toString();
+                        } else {
+                            // existed
+                            // upload update
+                            fileName = firebaseService.updateFile(bookDTO.getContentPdf(), contentPdf).toString();
+                        }
+                    }
+                    book.setContentPdf(fileName);
                 }
                 bookRepository.save(book);
                 return new ResponseEntity<>(
@@ -271,4 +292,5 @@ public class BookServiceImpl implements BookService {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
 }
