@@ -12,13 +12,6 @@
                 <mat-header-cell *matHeaderCellDef>Tiêu đề</mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{ element.title }}  </mat-cell>
             </ng-container>
-            <ng-container matColumnDef="bookCover">
-                <mat-header-cell *matHeaderCellDef>Hình ảnh</mat-header-cell>
-                <mat-cell *matCellDef="let element"> 
-                    <img style="width: 50px; height: 50px; margin: auto;" [src]="element.bookCover == '' ? '': 'data:image/jpeg;base64,' + element.bookCover" alt="">
-                </mat-cell>
-            </ng-container>
-            
             <ng-container matColumnDef="categories">
                 <mat-header-cell *matHeaderCellDef>Thể loại</mat-header-cell>
                 <mat-cell *matCellDef="let element"> 
@@ -53,6 +46,14 @@
             <ng-container matColumnDef="publisher">
                 <mat-header-cell *matHeaderCellDef>Nhà xuất bản</mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{ element.publisher.name }}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="content">
+                <mat-header-cell *matHeaderCellDef>Nội dung</mat-header-cell>
+                <mat-cell *matCellDef="let element"> 
+                    <button *ngIf="element.contentPdf != null && element.contentPdf !== ' '" mat-icon-button color="primary" (click)="onViewContentPdf(element)">
+                        <mat-icon>book</mat-icon>
+                    </button> 
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>

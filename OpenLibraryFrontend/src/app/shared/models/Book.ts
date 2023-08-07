@@ -14,6 +14,7 @@ export class Book {
     authors!: object[];
     publisherId? :any;
     publisher?: any;
+    contentPdf!: string;
     constructor(title: string, isbn: string, numberOfPages: number, description: string,
         publishDate: Date, language: string, categories: any[], authors: any[], publisherId: any) {
             this.title = title;

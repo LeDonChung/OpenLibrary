@@ -15,7 +15,7 @@ import { ConfirmationComponent } from '../dialog/confirmation/confirmation.compo
   styleUrls: ['./book.component.scss']
 })
 export class BookComponent implements OnInit{
-  public displayColumns: string[] = ["title", "bookCover" , "categories", "authors" , "isbn", "language", "publisher", "action"];
+  public displayColumns: string[] = ["title", "categories", "authors" , "isbn", "language", "publisher", "content" ,"action"];
   public responseMessage: any;
   public page: Page<Book> = new Page(0, 0, 5, []);
   constructor(
@@ -28,6 +28,7 @@ export class BookComponent implements OnInit{
   ngOnInit(): void {
     this.loadData(null);
   }
+
   loadData(event: any) {
     if(event === null) {
       this.page = new Page(0, 0, 5, []);
@@ -50,6 +51,7 @@ export class BookComponent implements OnInit{
       this.snackbarService.open(this.responseMessage, SystemConstraints.ERROR);
     });
   }
+
   enable(book: Book) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -81,6 +83,7 @@ export class BookComponent implements OnInit{
     });
 
   }
+
   disable(book: Book) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -111,6 +114,7 @@ export class BookComponent implements OnInit{
       });
     });
   }
+
   onAdd() {
     this.router.navigate(['admin/books/edit']);
   }
@@ -118,6 +122,7 @@ export class BookComponent implements OnInit{
   onUpdate(values: Book) {
     this.router.navigate(['admin/books/edit/' + values.id]);
   }
+
   onView(values: Book) {
     this.router.navigate(['admin/books/view/' + values.id]);
   }
@@ -151,5 +156,9 @@ export class BookComponent implements OnInit{
         this.snackbarService.open(this.responseMessage, SystemConstraints.ERROR);
       });
     });
+  }
+
+  onViewContentPdf(book: Book) {
+    window.location.href = book.contentPdf;
   }
 }

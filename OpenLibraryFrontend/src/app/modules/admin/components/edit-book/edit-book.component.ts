@@ -22,9 +22,15 @@ export class EditBookComponent implements OnInit {
   public id: any;
   public responseMessage: any;
   public bookForm: any = FormGroup;
+
   public imgUrl: string = "";
   public uploadImage!: File;
   public isImg: boolean = false;
+
+  public contentPdf: string = "";
+  public uploadContentPdf!: File;
+  public isContentPdf: boolean = false;
+
   editor = ClassicEditor;
   public categories: any = [];
   public publishers: any = [];
@@ -65,7 +71,12 @@ export class EditBookComponent implements OnInit {
       this.bookService.getById(this.id).subscribe((res: any) => {
         this.ngxService.stop();
         this.book = res.data;
-        this.isImg = true;
+        if(this.book.bookCover != null) {
+          this.isImg = true;
+        }
+        if(this.book.contentPdf != null) {
+          this.isContentPdf = true;
+        }
         this.createForm();
         this.book.categories.forEach((value: any) => {
           this.addCategory(value.id);
@@ -170,6 +181,17 @@ export class EditBookComponent implements OnInit {
       this.isImg = false;
     }
   }
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.contentPdf = event.target.files[0].name;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+      this.uploadContentPdf = event.target.files[0];
+      this.isContentPdf = false;
+    }
+  } 
   handlerAddSubmit() {
     this.ngxService.start();
     const formData = new FormData();
@@ -184,6 +206,7 @@ export class EditBookComponent implements OnInit {
     });
 
     formData.append('bookCover', this.uploadImage !== undefined ? this.uploadImage : '');
+    formData.append('contentPdf', this.uploadContentPdf !== undefined ? this.uploadContentPdf : '');
     formData.append('bookDto', JSON.stringify(book));
     this.bookService.insertOne(formData).subscribe((res: any) => {
       this.ngxService.stop();
@@ -214,6 +237,7 @@ export class EditBookComponent implements OnInit {
       return value.id;
     });
 
+    formData.append('contentPdf', this.uploadContentPdf !== undefined ? this.uploadContentPdf : '');
     formData.append('bookCover', this.uploadImage !== undefined ? this.uploadImage : '');
     formData.append('bookDto', JSON.stringify(this.book));
 
@@ -233,6 +257,9 @@ export class EditBookComponent implements OnInit {
       }
       this.snackbarService.open(this.responseMessage, 'error');
     });
+  }
+  viewContent () {
+    window.location.href = this.book.contentPdf;
   }
 }
 

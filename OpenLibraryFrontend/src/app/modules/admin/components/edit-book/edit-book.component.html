@@ -59,7 +59,12 @@
             </mat-error>
           </mat-form-field>
         </div>
-
+        <div fxFlex fxLayout="row" class="upload-pdf">
+            <button type="button" mat-raised-button (click)="fileInput.click()">Chọn nội dung pdf</button>
+            <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+            <span class="file-name" *ngIf="!isContentPdf"> {{  contentPdf }} </span>
+            <button color="primary" type="button" style="margin-left: 20px;" *ngIf="isContentPdf" mat-raised-button (click)="viewContent()">Xem</button>
+        </div>
         <div fxFlex fxLayout="row">
           <label class="btn-upload">
             <input type="file" name="fileupload" (change)="onViewImage($event)" />
@@ -67,6 +72,7 @@
             <img [src]="!isImg ? imgUrl : 'data:image/jpeg;base64,' + book.bookCover" />
           </label>
         </div>
+
         <div fxFlex fxLayout="column" class="descriptions">
           <button class="btn btn-primary description">Mô tả</button>
           <ckeditor [editor]="editor" formControlName="description"></ckeditor>
