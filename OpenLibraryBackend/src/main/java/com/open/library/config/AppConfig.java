@@ -74,6 +74,7 @@ public class AppConfig {
                 .requestMatchers("/author/findById/**", "/author/getAll/**").permitAll()
                 .requestMatchers("/publisher/findById/**", "/publisher/getAll/**").permitAll()
                 .requestMatchers("/book/findById/**", "/book/getAll/**").permitAll()
+                .requestMatchers("/feedback/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationManager(manager)

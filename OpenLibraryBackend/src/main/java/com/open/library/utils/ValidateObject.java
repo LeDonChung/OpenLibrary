@@ -168,4 +168,33 @@ public class ValidateObject {
                 .build().validate());
         return errors;
     }
+
+    public static Map<String, String> validateFeedbackDTO(FeedbackDTO dto) {
+        Map<String, String> errors = new HashMap<>();
+        errors.putAll(
+                ValidateUtils.builder()
+                        .fieldName("name")
+                        .value(dto.getName())
+                        .required(true)
+                        .build().validate()
+        );
+
+        errors.putAll(
+                ValidateUtils.builder()
+                        .fieldName("email")
+                        .value(dto.getEmail())
+                        .required(true)
+                        .isEmail(true)
+                        .build().validate()
+        );
+
+        errors.putAll(
+                ValidateUtils.builder()
+                        .fieldName("message")
+                        .value(dto.getMessage())
+                        .required(true)
+                        .build().validate()
+        );
+        return errors;
+    }
 }

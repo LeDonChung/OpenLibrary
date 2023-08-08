@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+</head>
+
+<body>
+    <p>
+        Xin chào [[ ${ name } ]],
+        <br><br>
+        Cảm ơn bạn rất nhiều vì đã chia sẻ trải nghiệm của mình với Open Library. Phản hồi của bạn giúp chúng tôi cải thiện sản phẩm của mình cho mọi người.
+    </p>
+    <p th:if="${ !default }">
+        Câu hỏi của bạn: [[ ${message } ]]
+        <br>
+        Nội dung: [[ ${content} ]]
+    </p>
+    <p>
+        Nếu bạn muốn thảo luận về cách chúng tôi có thể cải thiện trải nghiệm của bạn, vui lòng gọi cho chúng tôi theo số 0867713557 hoặc trả lời email này. Chúng tôi mong chờ tin từ bạn!
+        <br><br>
+        Cảm ơn một lần nữa,
+        Open Library
+    </p>
+</body>
+
+</html>
