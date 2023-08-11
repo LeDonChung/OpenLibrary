@@ -8,6 +8,7 @@ import { PublisherComponent } from './components/publisher/publisher.component';
 import { AuthorComponent } from './components/author/author.component';
 import { BookComponent } from './components/book/book.component';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'books', component: BookComponent },
   { path: 'books/edit', component: EditBookComponent },
   { path: 'books/edit/:id', component: EditBookComponent },
-  { path: 'books/view/:id', component: EditBookComponent }
+  { path: 'books/view/:id', component: EditBookComponent },
+  { path: 'feedbacks', component: FeedbackComponent }
 ];
 
 @NgModule({

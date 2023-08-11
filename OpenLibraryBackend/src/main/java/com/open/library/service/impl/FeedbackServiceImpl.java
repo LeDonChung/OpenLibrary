@@ -33,7 +33,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final FeedbackRepository feedbackRepository;
     private final FeedbackMapper feedbackMapper;
     private final MailService mailService;
-    private Feedback feedback;
 
     @Override
     public ResponseEntity<BaseResponse> findAll() {
@@ -64,6 +63,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     public ResponseEntity<BaseResponse> save(FeedbackDTO feedbackDTO) {
         try {
             Feedback feedback = feedbackMapper.toEntity(feedbackDTO);
+            feedback.setStatus(false);
             feedbackRepository.save(feedback);
 
             return new ResponseEntity<>(OpenLibraryUtils.getResponse("Thêm nhận xét thành công.", true, String.valueOf(HttpStatus.OK.value())), HttpStatus.OK);
@@ -95,7 +95,10 @@ public class FeedbackServiceImpl implements FeedbackService {
             if (feedback.isPresent()) {
 
                 mailService.sendResponseFeedback(feedback.get(), content, defaultEmail);
-
+                Feedback feedbackUpdate = feedback.get();
+                feedbackUpdate.setStatus(true);
+                feedbackUpdate.setResponseMessage(content);
+                feedbackRepository.save(feedbackUpdate);
                 return new ResponseEntity<>(OpenLibraryUtils.getResponse(String.format("Gửi phản hồi nhận xét có mã %s thành công.", feedbackId), true, String.valueOf(HttpStatus.OK.value())), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(OpenLibraryUtils.getResponse(String.format("Nhận xét có mã %d không tồn tại.", feedbackId), false, String.valueOf(HttpStatus.BAD_REQUEST.value())), HttpStatus.BAD_REQUEST);

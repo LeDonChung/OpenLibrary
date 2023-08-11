@@ -1,0 +1,53 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span>Nhận xét</span>
+        <span class="spacer"></span>
+        <button mat-dialog-close mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="feedbackForm">
+        <div fxFlex fxLayout="column"> 
+            <mat-form-field fxFlex>
+                <mat-label>ID</mat-label>
+                <input matInput formControlName="id" readonly/>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>Tên người gửi</mat-label>
+                <input matInput formControlName="name" required readonly/>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" required readonly/>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>Nội dung</mat-label>
+                <input matInput formControlName="message" required readonly/>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>Phản hồi</mat-label>
+                <input matInput formControlName="responseMessage" required/>
+                <mat-error *ngIf="feedbackForm.controls.responseMessage.touched && feedbackForm.controls.responseMessage.invalid">
+                    <span *ngIf="feedbackForm.controls.responseMessage.errors.required">
+                        Phản hồi không thể bỏ trống.
+                    </span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>Trạng thái</mat-label>
+                <input matInput formControlName="status" required readonly/>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button [disabled]="!(feedbackForm.valid && feedbackForm.dirty)" mat-raised-button color="primary" type="submit" (click)="onSendResponse()">
+        <mat-icon>send</mat-icon> Gửi
+    </button>
+    <button mat-raised-button color="warn" type="submit" mat-dialog-close>
+        <mat-icon>cancel</mat-icon> Đóng
+    </button>
+    
+</mat-dialog-actions>

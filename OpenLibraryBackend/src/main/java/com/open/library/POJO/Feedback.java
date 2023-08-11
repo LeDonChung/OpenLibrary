@@ -26,4 +26,7 @@ public class Feedback {
 
     private String message;
 
+    private String responseMessage;
+
+    private boolean status;
 }

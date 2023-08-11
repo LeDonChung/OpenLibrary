@@ -16,4 +16,8 @@ public class FeedbackResponseDTO {
 
     private String message;
 
+    private String responseMessage;
+
+    private boolean status;
+
 }

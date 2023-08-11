@@ -21,6 +21,8 @@ public class FeedbackMapper {
         dto.setName(entity.getName());
         dto.setEmail(entity.getEmail());
         dto.setMessage(entity.getMessage());
+        dto.setResponseMessage(entity.getResponseMessage());
+        dto.setStatus(entity.isStatus());
         return dto;
     }
 

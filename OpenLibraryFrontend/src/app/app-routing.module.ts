@@ -7,11 +7,10 @@ import { AdminComponent } from './modules/admin/admin.component';
 import { RouteGuardService } from './shared/services/guards/route-guard.service';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
-    path: 'user',
+    path: '',
     component: UserComponent,
     loadChildren: () =>
       import('./modules/user/user.module').then((m) => m.UserModule),

@@ -38,6 +38,8 @@ import { AuthorDialogComponent } from './components/dialog/author-dialog/author-
 import { BookComponent } from './components/book/book.component';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { MatSelectModule } from '@angular/material/select';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { FeedbackDialogComponent } from './components/dialog/feedback-dialog/feedback-dialog.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text: 'Loading',
@@ -69,6 +71,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AuthorDialogComponent,
     BookComponent,
     EditBookComponent,
+    FeedbackComponent,
+    FeedbackDialogComponent,
   ],
   imports: [
     CommonModule,
