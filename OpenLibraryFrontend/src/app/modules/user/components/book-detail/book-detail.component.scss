@@ -1,0 +1,48 @@
+.carousel-content {
+    border-radius: 10px;
+    margin: 20px 0;
+}
+.book {
+    padding: 10px;
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.book-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 10px 0;
+    .title {
+        color: #337ab7;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .authors,
+    .categories,
+    .publisher,
+    .isbn,
+    .language,
+    .numberOfPages,
+    .alert, .action {
+        margin-top: 10px;
+    }
+    .action a{
+        margin-right: 10px;
+    }
+
+}
+.book-description {
+    .book-description-title {
+        font-size: 24px;
+        padding: 20px 0;
+        border-top: 1px solid #2FC;
+        border-bottom: 1px solid #2FC;
+    }
+}
+.title-noti {
+    padding: 10px 0;
+    border-top: 1px solid #2FC;
+}

@@ -7,8 +7,6 @@ import { AdminComponent } from './modules/admin/admin.component';
 import { RouteGuardService } from './shared/services/guards/route-guard.service';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
   {
     path: '',
     component: UserComponent,
@@ -26,7 +24,7 @@ const routes: Routes = [
         expectedRole: ['ADMIN']
       }
     },
-  { path: '**', component: LoginComponent },
+  { path: '**', component: UserComponent },
 ];
 
 @NgModule({

@@ -1,0 +1,108 @@
+<div class="container">
+    <p class="title-noti text-center">
+        <ngb-alert type="success" [dismissible]="false">
+            Sách ebook được sưu tầm từ Internet, Bản quyền sách thuộc về Tác giả & Nhà xuất bản
+        </ngb-alert> 
+    </p>
+    
+    <div class="main-content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div class="carousel-content">
+                    <app-carousel carousel="carousel-1"></app-carousel>
+                </div>
+                <div class="book-details">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="book">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                        <img class="book-cover" src="https://scontent-hkt1-2.xx.fbcdn.net/v/t39.30808-6/361366862_1607093663105601_7835049158388472986_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=be3454&_nc_ohc=NEaCqd6PqWEAX-Dcuqh&_nc_ht=scontent-hkt1-2.xx&oh=00_AfBuN2PY83Z7xFbaoyLMJmoD7sWlLU-oJioHQJsyIQ8_xA&oe=64DD07E3"
+                                            alt="Sách 1" />
+                                    </div>
+                                    
+                                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                                        <div class="book-content">
+                                            <h1 class="title">Sách 1</h1>
+                                            <div class="authors">
+                                                <span>Tác giả: </span>
+                                                <app-tags [authors]="authors" tagBy="author"></app-tags>
+                                            </div>
+                                            <div class="categories">
+                                                <span>Thể loại: </span>
+                                                <app-tags [authors]="authors" tagBy="category"></app-tags>
+                                            </div>
+                                            <div class="publisher">
+                                                <span>Nhà xuất bản: </span>
+                                                <app-tags [authors]="authors" tagBy="publisher"></app-tags>
+                                            </div>
+                                            <span class="isbn">
+                                                ISBN: 12412412424
+                                            </span>
+                                            <span class="language">
+                                                Ngôn ngữ: Tiếng việt
+                                            </span>
+                                            <span class="numberOfPages">
+                                                Số trang: 280 trang
+                                            </span>
+                                            <ngb-alert class="alert" type="info" [dismissible]="false">
+                                                Vui lòng chọn định dạng file để tải hoặc đọc online. 
+                                            </ngb-alert>
+                                            <div class="action">
+                                                <a href="#" class="btn btn-success">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-pdf-fill" viewBox="0 0 16 16">
+                                                        <path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"/>
+                                                        <path fill-rule="evenodd" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"/>
+                                                    </svg> 
+                                                    PDF
+                                                </a>
+
+                                                <a href="#" class="btn btn-warning">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star-fill" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zM8.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.178.178 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.178.178 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.178.178 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.178.178 0 0 1-.134-.098L8.16 4.1z"/>
+                                                    </svg> 
+                                                    Đọc online
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="book-description">
+                                            <h3 class="book-description-title">
+                                                Mô tả
+                                            </h3>
+                                            <div class="book-description-content text-justify">
+                                                <p>Trong xã hội ngày nay, hoạt động thương mại không ngừng phát triển theo hướng cạnh tranh mạnh mẽ, thậm chí rất khốc liệt. Với công nghệ hiện đại, thế giới sản phẩm-dịch vụ ngày càng đáp ứng nhu cầu đa dạng của khách hàng, đem lại những nguồn lợi khổng lồ cho các công ty và tổ chức trên toàn thế giới. Vậy cơ chế vận hành của doanh nghiệp có khả năng thu về lợi nhuận nằm ở yếu tố công nghệ hiện đại? Không hẳn! Bí quyết chính là con người, và ở đây là các nhân viên bán hàng, những người đại diện cho công ty trực tiếp thực hiện các cuộc chào hàng.</p>
+                                                <p>Tuy nhiên, trong nhiều năm, bán hàng bị coi là nghề hạng hai. Nhiều người tỏ ra ngượng ngùng khi nói với người khác rằng họ làm nghề bán hàng. Thái độ này đang dần thay đổi. Ngày nay các công ty mạnh nhất là các công ty có đội ngũ nhân viên bán hàng giỏi nhất. Thật vậy, không thể phủ nhận người bán hàng là người quan trọng nhất trong bất kỳ doanh nghiệp nào. Không bán được hàng thì kể cả các công ty tiếng tăm và lớn mạnh nhất cũng phải đóng cửa. Khâu bán hàng chính là buzi đánh lửa cho bộ máy của doanh nghiệp.Thế nhưng sự khác biệt chính giữa người bán hàng chuyên nghiệp với người bán hàng nghiệp dư chính nằm ở đâu?</p>
+                                                <p>Và đây, bộ công cụ 72 thuật tấn công tâm lý trong bán lẻ này sẽ đáp án thích hợp nhất giúp bạn tháo gỡ những khó khăn của mình. Rồi bạn sẽ thấy câu trả lời cho câu trả lời trên đơn giản đến không ngờ – đó là khả năng nắm bắt tâm lý khách hàng. Như tất cả chúng ta đều biết, trong mọi thương vụ luôn tiềm ẩn lợi ích chính mà khách hàng tìm kiếm cũng như lý do khiến khách hàng từ chối mua, việc của người bán hàng là tìm ra lợi ích và lý do phản đối để thuyết phục khách hàng chọn sản phẩm của mình.</p>
+                                                <p>Được biên soạn dựa trên những tài liệu giá trị, các tình huống và ví dụ minh họa thực tế điển hình trong quá trình bán hàng, cuốn sách sẽ giúp bạn “khai thông” tâm lý của khách hàng cũng như của chính bạn để trở nên năng động, chủ động, không e ngại bị khách hàng từ chối, vững vàng về quan điểm, quyết tâm theo đuổi mục đích – như một nhân viên bán hàng tài năng!</p>
+                                                <p>Một nhân viên bán hàng thành công nhất định phải là một nhà tâm lý học vĩ đại, họ phải lên kế hoạch tỉ mỉ và kỹ lưỡng để sẵn sàng trao đổi và giao tiếp với khách hàng. Giao dịch thành công hay không phần lớn phụ thuộc vào khả năng thấu hiểu tâm lý và nhu cầu của khách hàng.</p>
+                                                <p>Một vài người bán hàng mới vào nghề đã không có cái nhìn đúng đắn về nghề nghiệp của mình. Họ luôn cho rằng họ đang “cần” khách hàng nên thiếu tự tin khi đối diện với khách. Nhiều người bán hàng bồn chồn, bất an, nói năng lắp bắp, nhất là khi trao đổi hoặc đề xuất mua hàng. Họ tự ti, sợ rằng nếu không tôn trọng, nhất nhất nghe theo lời khách hàng thì khách hàng sẽ không mua hàng của mình. Đây là lối suy nghĩ rất phổ biến. Nhân viên bán hàng nghĩ nghề nghiệp của họ là thấp hèn. Nhưng thực tế, điều này hoàn toàn sai lầm.</p>
+                                                <p>Bán hàng cũng như các ngành nghề khác, hoàn toàn đáng được coi trọng. Nhân viên bán hàng không phải là người lôi kéo hay phục tùng khách hàng, mà là người giúp giải quyết vấn đề. Nên nhớ rằng, chỉ khi bạn tôn trọng chính mình, khách hàng mới tin tưởng bạn.</p>
+                                                <p>Để có được thiện cảm của khách hàng, trước tiên, mỗi nhân viên bán hàng phải công nhận khả năng của chính mình, để “cái tôi” có vị thế tích cực. Tuy có thể không trực tiếp dẫn đến việc bán sản phẩm hay dịch vụ thành công, nhưng những biểu hiện tích cực của người bán nhất định sẽ ảnh hưởng tích cực ít nhiều đến người mua. Chẳng ai muốn giao tiếp với người thiếu tự tin, chứ chưa nói đến việc mua hàng hay tin tưởng sử dụng dịch vụ mà người đó cung cấp. Bởi sự tự ti sẽ tạo nên sự nghi ngờ, cảnh giác của khách hàng vào sản phẩm hay dịch vụ được giới thiệu.</p>
+                                                <p>Hãy xem trường hợp một nhân viên tiếp thị máy tính luôn nịnh bợ vị giám đốc nọ, một khách hàng tiềm năng của anh ta. Hành động đó không những không khiến vị giám đốc hài lòng mà còn tỏ ra hết sức khó chịu dù chất lượng sản phẩm máy tính anh ta cung cấp không tồi. Cuối cùng, vị giám đốc đã quyết định không mua hàng với nhận xét: “Cậu không cần nhún nhường như thế, cậu bán sản phẩm chứ không bán những lời ngon ngọt. Còn tôi mua sản phẩm vì chất lượng và sự phù hợp chứ không mua thái độ xun xoe của cậu.”</p>
+                                                <p>Bộ dạng khúm núm hạ mình của nhân viên bán hàng không những hạ thấp giá trị của sản phẩm mà còn “giảm giá” cả thương hiệu và nhân cách của chính họ. Đó là lý do tại sao mỗi nhân viên bán hàng cần duy trì thái độ đúng mực với khách hàng để khiến họ có thiện cảm trong suốt quá trình chia sẻ về sản phẩm.</p>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="carousel-content">
+                    <app-carousel carousel="carousel-2"></app-carousel>
+                </div>
+                <app-category-list></app-category-list>
+            </div>
+        </div>
+    </div>
+</div>

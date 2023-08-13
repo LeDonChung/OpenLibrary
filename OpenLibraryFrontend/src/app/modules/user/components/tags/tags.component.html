@@ -1,0 +1,17 @@
+<div *ngIf="authors">
+    <a *ngFor="let author of authors" routerLink="/{{tagBy}}/{{ author.id }}">
+        {{ author.fullName }}
+    </a>
+</div>
+
+<div *ngIf="categories">
+    <a *ngFor="let category of categories" routerLink="/{{tagBy}}/{{ category.code }}">
+        {{ category.name }}
+    </a>
+</div>
+
+<div *ngIf="publisher">
+    <a routerLink="/{{tagBy}}/{{ publisher.code }}">
+        {{ publisher.name }}
+    </a>
+</div>

@@ -1,13 +1,18 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3">
+            <div class="brand_logo">
+                <a class="navbar-brand" [routerLink]="'/home'">
+                    <img class="logo__brand" src="https://openlibrary.org/static/images/openlibrary-logo-tighter.svg" alt="">
+                </a>
+            </div>
             <div class="card">
-                <h4 class="card-header">Đăng nhập</h4>
+                <h4 class="card-header text-center">Đăng nhập</h4>
                 <div class="card-body">
                     <form [formGroup]="loginForm">
-                        <div *ngIf="message" class="alert alert-info">
+                        <ngb-alert *ngIf="message" type="info" [dismissible]="false">
                             {{ message }}
-                        </div>
+                        </ngb-alert> 
                         <div class="mb-3">
                             <label class="form-label">Tài khoản</label>
                             <input type="text" formControlName="username" class="form-control" />
@@ -28,7 +33,7 @@
                         </div>
                         <div>
                             <button class="btn btn-primary" (click)="onSubmit()">
-                                Login
+                                Đăng nhập
                             </button>
                             <a routerLink="/register" class="btn btn-link">Đăng ký</a>
                         </div>

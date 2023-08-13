@@ -1,20 +1,52 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+<nav class="navbar navbar-expand-lg navbar-light my-header">
 	<div class="container-fluid">
-		<a class="navbar-brand" [routerLink]="'.'">
-			<img style="width: 50px; height: 50px;" src="/src/assets/images/openlibrary-logo-tighter.svg" alt="">
+		<a class="navbar-brand" [routerLink]="'/home'" (click)="isMenuCollapsed = true">
+			<img class="logo__brand" src="https://openlibrary.org/static/images/openlibrary-logo-tighter.svg" alt="">
 		</a>
+
 		<button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
+		
 		<div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-			<ul class="navbar-nav">
+			<ul class="navbar-nav nav">
 				<li class="nav-item active">
-					<!-- Step 4: Close the menu when a link is clicked. -->
-					<a class="nav-link" [routerLink]="'/user/home'" (click)="isMenuCollapsed = true">Home</a>
+					<a class="nav-link" (click)="isMenuCollapsed = true" [routerLink]="'/home'">Trang chủ</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'/login'" (click)="isMenuCollapsed = true">Login</a>
+					<div ngbDropdown class="d-inline-block">
+						<button type="button" class="btn" id="dropdownBasic1" ngbDropdownToggle>
+							Thể loại
+						</button>
+						<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+							<a ngbDropdownItem [routerLink]="'category/1'">Thể loại 1</a>
+							<a ngbDropdownItem [routerLink]="'category/2'">Thể loại 2</a>
+							<a ngbDropdownItem [routerLink]="'category/3'">Thể loại 3</a>
+						</div>
+					</div>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'/register'" (click)="isMenuCollapsed = true">Register</a>
+					<div class="input-group">
+						<div class="btn-group" ngbDropdown role="group">
+							<button type="button" class="btn" ngbDropdownToggle>Lọc</button>
+							<div class="dropdown-menu" ngbDropdownMenu>
+								<button ngbDropdownItem>One</button>
+								<button ngbDropdownItem>Two</button>
+								<button ngbDropdownItem>Four!</button>
+							</div>
+						</div>
+						<input type="text" class="form-control" aria-label="Text input with dropdown button">
+						<button class="btn btn-primary" type="button">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+								<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+							</svg>
+						</button> 
+					</div>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link"  [routerLink]="'/register'" (click)="isMenuCollapsed = true">Đăng ký</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" class="btn btn-primary" [routerLink]="'/login'" (click)="isMenuCollapsed = true">Đăng nhập</a>
 				</li>
 			</ul>
 		</div>

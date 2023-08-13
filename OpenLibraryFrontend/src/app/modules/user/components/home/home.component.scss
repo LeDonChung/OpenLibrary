@@ -1,0 +1,43 @@
+.title-noti {
+    padding: 10px 0;
+    border-top: 1px solid #2FC;
+}
+.main-home {
+    background-color: #eee;
+    padding: 60px;
+    border-radius: 5px;
+}
+
+.preface-content {
+    strong.title {
+        color: #0000FF;
+    }
+}
+
+.preface {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2FC;
+}
+.categories {
+    padding: 20px 0;
+}
+.item-category {
+    margin: 10px 0;
+    a {
+        display: flex;
+        align-items: center;
+        color: #337ab7;
+        font-size: 14px;
+        text-decoration: none;
+        font-weight: 600;
+        span {
+            margin-left: 5px;
+        }
+    }
+
+    
+}
+
+.carousel {
+    padding: 60px;
+}

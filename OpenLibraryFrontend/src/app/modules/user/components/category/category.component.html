@@ -1,0 +1,24 @@
+<div class="container">
+    <p class="title-noti text-center">
+        <ngb-alert type="success" [dismissible]="false">
+            Sách ebook được sưu tầm từ Internet, Bản quyền sách thuộc về Tác giả & Nhà xuất bản
+        </ngb-alert> 
+    </p>
+    
+    <div class="main-content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div class="carousel-content">
+                    <app-carousel carousel="carousel-1"></app-carousel>
+                </div>
+                <app-book-list></app-book-list>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="carousel-content">
+                    <app-carousel carousel="carousel-2"></app-carousel>
+                </div>
+                <app-category-list></app-category-list>
+            </div>
+        </div>
+    </div>
+</div>

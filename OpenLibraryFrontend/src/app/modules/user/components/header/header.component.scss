@@ -1,0 +1,16 @@
+.logo__brand {
+    width: 190px; height: 45px;
+}
+.navbar-nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+.nav-item {
+    color: #333;
+}
+a {
+    font-size: 1em;
+    text-decoration: none;
+}
