@@ -8,13 +8,6 @@ import { RouteGuardService } from './shared/services/guards/route-guard.service'
 
 const routes: Routes = [
   {
-    path: '',
-    component: UserComponent,
-    loadChildren: () =>
-      import('./modules/user/user.module').then((m) => m.UserModule),
-   
-  },
-  {
     path: 'admin',
     component: AdminComponent,
     loadChildren: () =>
@@ -23,7 +16,14 @@ const routes: Routes = [
       data: {
         expectedRole: ['ADMIN']
       }
-    },
+  },
+  {
+    path: '',
+    component: UserComponent,
+    loadChildren: () =>
+      import('./modules/user/user.module').then((m) => m.UserModule),
+   
+  },
   { path: '**', component: UserComponent },
 ];
 

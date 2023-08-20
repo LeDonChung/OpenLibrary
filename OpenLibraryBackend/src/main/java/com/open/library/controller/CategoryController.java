@@ -33,6 +33,18 @@ public class CategoryController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+    @GetMapping("/getAllByActivated")
+    public ResponseEntity<BaseResponse> getAllByActivated() {
+        try {
+            return categoryService.getAllByActivated();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
     @PostMapping("/getPages")
     public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO) {
         try {
@@ -123,5 +135,16 @@ public class CategoryController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
-
+    @GetMapping("/findByCode/{code}")
+    public ResponseEntity<BaseResponse> getByCode(@PathVariable String code) {
+        try {
+            return categoryService.findByCode(code);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
 }

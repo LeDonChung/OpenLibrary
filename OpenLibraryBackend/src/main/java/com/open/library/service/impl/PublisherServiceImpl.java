@@ -33,6 +33,7 @@ public class PublisherServiceImpl implements PublisherService {
     private final PublisherRepository publisherRepository;
     private final JwtService jwtService;
     private final PublisherMapper publisherMapper;
+
     @Override
     public ResponseEntity<BaseResponse> findAll() {
         try {
@@ -172,28 +173,20 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public ResponseEntity<BaseResponse> findById(Long id) {
         try {
-            boolean isAdmin = jwtService.isAdmin();
-            if (isAdmin) {
-                Optional<Publisher> publisher = publisherRepository.findById(id);
-                if (publisher.isPresent()) {
-                    Publisher publisherEntity = publisher.get();
-                    publisherEntity.set_deleted(false);
-                    publisherEntity.set_activated(true);
-                    publisherRepository.save(publisherEntity);
-                    return new ResponseEntity<>(
-                            OpenLibraryUtils.getResponse(publisherMapper.toResponseDTO(publisherEntity), true, String.valueOf(HttpStatus.OK.value())),
-                            HttpStatus.OK
-                    );
-                } else {
-                    return new ResponseEntity<>(
-                            OpenLibraryUtils.getResponse(String.format("Nhà xuất bản có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
-                            HttpStatus.BAD_REQUEST
-                    );
-                }
+            Optional<Publisher> publisher = publisherRepository.findById(id);
+            if (publisher.isPresent()) {
+                Publisher publisherEntity = publisher.get();
+                publisherEntity.set_deleted(false);
+                publisherEntity.set_activated(true);
+                publisherRepository.save(publisherEntity);
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(publisherMapper.toResponseDTO(publisherEntity), true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
             } else {
                 return new ResponseEntity<>(
-                        OpenLibraryUtils.getResponse(SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
-                        HttpStatus.UNAUTHORIZED
+                        OpenLibraryUtils.getResponse(String.format("Nhà xuất bản có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                        HttpStatus.BAD_REQUEST
                 );
             }
         } catch (Exception e) {

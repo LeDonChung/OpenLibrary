@@ -17,9 +17,9 @@
 							Thể loại
 						</button>
 						<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-							<a ngbDropdownItem [routerLink]="'category/1'">Thể loại 1</a>
-							<a ngbDropdownItem [routerLink]="'category/2'">Thể loại 2</a>
-							<a ngbDropdownItem [routerLink]="'category/3'">Thể loại 3</a>
+							<ng-container *ngFor="let category of categories">
+								<a ngbDropdownItem [href]="'category/' + category.code">{{ category.name }}</a>
+							</ng-container>
 						</div>
 					</div>
 				</li>

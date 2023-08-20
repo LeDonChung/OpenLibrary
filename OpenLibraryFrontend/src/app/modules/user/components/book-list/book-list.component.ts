@@ -1,4 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Author } from 'src/app/shared/models/Author';
+import { Book } from 'src/app/shared/models/Book';
+import { Category } from 'src/app/shared/models/Category';
+import { Page } from 'src/app/shared/models/Page';
+import { Publisher } from 'src/app/shared/models/Publisher';
+import { Sorter } from 'src/app/shared/models/Sorter';
+import { AuthorService } from 'src/app/shared/services/author/author.service';
+import { BookService } from 'src/app/shared/services/book/book.service';
+import { CategoryService } from 'src/app/shared/services/category/category.service';
+import { PublisherService } from 'src/app/shared/services/publisher/publisher.service';
 
 @Component({
   selector: 'app-book-list',
@@ -6,19 +16,69 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./book-list.component.scss']
 })
 export class BookListComponent implements OnInit{
-  title?: string;
   @Input()
-  type?: string = 'all';
-  page!: number;
-  constructor() { 
-    this.page = 1;
+  value?: any; // value
+
+  @Input()
+  type?: any; // category, author, pulisher
+
+  title?: any;
+
+  page: Page<Book> = new Page(0, 0, 5, []);
+  
+  constructor(
+    private categoryService: CategoryService,
+    private authorService: AuthorService,
+    private publisherService: PublisherService,
+    private bookService: BookService
+  ) { 
+    
   }
-  ngOnInit(): void {
-    this.title = 'Tất cả sách';
-    this.type = 'all';
+  
+  ngOnInit() {
+    this.getTitle();
+    this.loadData(null);
+  }
+  getTitle() {
+    // kiểm tra trường hợp tìm tất cả.
+    if(this.value?.code == 'all') {
+      this.title = 'Tất cả sách';
+    } else {
+      if(this.type === 'category') {
+        this.categoryService.getByCode(this.value).subscribe((res: any) => {
+          this.title = (res.data as Category).name;
+        }, (errors: any) => {
+          console.log(errors);
+        });
+      } else if(this.type === 'author') {
+        this.authorService.getById(this.value).subscribe((res: any) => {
+          this.title = (res.data as Author).fullName;
+        }, (errors: any) => {
+          console.log(errors);
+        });
+      } else if(this.type === 'publisher') {
+        this.categoryService.getByCode(this.value).subscribe((res: any) => {
+          this.title = (res.data as Publisher).name;
+        }, (errors: any) => {
+          console.log(errors);
+        });
+      }
+    }
+  }
+  loadData(event: any) {
+    if(event === null) {
+      this.page = new Page(0, 1, 5, [], new Sorter('title', 'asc'));
+    } else {
+      this.page.pageIndex = event;
+    }
+    this.bookService.getPagesByCategory(this.page, this.value).subscribe((res: any) => {
+      this.page = res.data;
+    }, (errors: any) => {
+      console.log(errors);
+    });
   }
 
-  onChange(event: any) {
-    console.log(this.page);
+  onChange(event: any) { 
+    this.loadData(event);
   }
 }

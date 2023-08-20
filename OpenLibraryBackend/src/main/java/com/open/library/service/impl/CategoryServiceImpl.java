@@ -15,6 +15,7 @@ import com.open.library.utils.response.CategoryResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -209,6 +210,48 @@ public class CategoryServiceImpl implements CategoryService {
                         PageUtils.builder().length(0).pageIndex(0)
                                 .dataSource(new ArrayList<>()).build()
                         , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getAllByActivated() {
+        try {
+            List<Category> categories = categoryRepository.findAllByActivated();
+            List<CategoryResponseDTO> results = categories.stream().map((category -> categoryMapper.toResponseDTO(category))).collect(Collectors.toList());
+            return new ResponseEntity<>(
+                    OpenLibraryUtils.getResponse(results, true, String.valueOf(HttpStatus.OK.value())),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> findByCode(String code) {
+        try {
+            Optional<Category> category = categoryRepository.findByCode(code);
+            if (category.isPresent()) {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(categoryMapper.toResponseDTO(category.get()), true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(String.format("Thể loại có mã %s không tồn tại.", code), false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                        HttpStatus.BAD_REQUEST
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

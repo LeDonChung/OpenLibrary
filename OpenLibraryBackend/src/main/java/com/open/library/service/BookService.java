@@ -21,4 +21,5 @@ public interface BookService {
 
     ResponseEntity<BaseResponse> remove(Long id);
 
+    ResponseEntity<BaseResponse> getPagesByCategory(PageDTO pageDTO, String code);
 }

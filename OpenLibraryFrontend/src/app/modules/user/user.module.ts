@@ -1,4 +1,4 @@
-import { NgbDropdown, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbModule, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
@@ -11,10 +11,11 @@ import { CarouselComponent } from './components/carousel/carousel.component';
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { RegisterComponent } from 'src/app/components/register/register.component';
 import { BookListComponent } from './components/book-list/book-list.component';
-import { CategoryComponent } from './components/category/category.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { TagsComponent } from './components/tags/tags.component';
+import { Router, RouterModule } from '@angular/router';
+import { FindResultComponent } from './components/find-result/find-result.component';
 
 
 
@@ -28,7 +29,7 @@ import { TagsComponent } from './components/tags/tags.component';
     LoginComponent,
     RegisterComponent,
     BookListComponent,
-    CategoryComponent,
+    FindResultComponent,
     CategoryListComponent,
     CarouselComponent,
     BookDetailComponent,
@@ -40,6 +41,7 @@ import { TagsComponent } from './components/tags/tags.component';
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
+    NgbPagination
   ]
 })
 export class UserModule { }

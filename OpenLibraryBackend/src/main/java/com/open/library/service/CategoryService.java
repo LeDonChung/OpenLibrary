@@ -13,4 +13,8 @@ public interface CategoryService {
     ResponseEntity<BaseResponse> findById(Long id);
 
     ResponseEntity<BaseResponse> getPages(PageDTO pageDTO);
+
+    ResponseEntity<BaseResponse> getAllByActivated();
+
+    ResponseEntity<BaseResponse> findByCode(String code);
 }

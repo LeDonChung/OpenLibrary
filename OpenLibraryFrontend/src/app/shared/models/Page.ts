@@ -1,3 +1,4 @@
+import { Sorter } from "./Sorter";
 import { User } from "./User";
 
 export class Page<T> {
@@ -6,10 +7,12 @@ export class Page<T> {
     pageIndex: number = 0;
     pageSize:number = 5;
     dataSource: T[];
-    constructor(length: number, pageIndex: number, pageSize: number, dataSource: T[]) {
+    sorter?: Sorter;
+    constructor(length: number, pageIndex: number, pageSize: number, dataSource: T[], sorter?: Sorter) {
         this.length = length;
         this.pageIndex = pageIndex;
         this.pageSize = pageSize;
         this.dataSource = dataSource;
+        this.sorter = sorter;
     }
 }

@@ -13,4 +13,6 @@ public class PageDTO {
     private int pageSize;
 
     private int[] pageSizeOptions;
+
+    private SorterDTO sorter;
 }

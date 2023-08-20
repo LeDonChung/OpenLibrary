@@ -2,16 +2,18 @@
     <h4 class="card-header">{{ title }}</h4>
     <div class="card-body">
         <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 mg-b-30">
-                <a [routerLink]="'/book/2'" class="book">
-                    <img src="https://scontent-hkt1-2.xx.fbcdn.net/v/t39.30808-6/361366862_1607093663105601_7835049158388472986_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=be3454&_nc_ohc=NEaCqd6PqWEAX-Dcuqh&_nc_ht=scontent-hkt1-2.xx&oh=00_AfBuN2PY83Z7xFbaoyLMJmoD7sWlLU-oJioHQJsyIQ8_xA&oe=64DD07E3"
-                        alt="Sách 1" />
-                    <p>Sách 1</p>
-                </a>
-            </div>
+            <ng-container *ngFor="let book of page.dataSource">
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 mg-b-30">
+                    <a [routerLink]="'/book/' + book.id" class="book" routerLinkActive="active">
+                        <img [src]="'data:image/jpeg;base64,' + book?.bookCover"
+                            [alt]="book?.title" />
+                        <p>{{ book?.title }}</p>
+                    </a>
+                </div>
+            </ng-container>
         </div>
         <div class="pagination">
-            <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
+            <ngb-pagination [directionLinks]="true" [collectionSize]="page.length" [(page)]="page.pageIndex" [pageSize]="page.pageSize" [rotate]="true" [ellipses]="false"
             [boundaryLinks]="true" (pageChange)="onChange($event)"></ngb-pagination>
         </div>
     </div>

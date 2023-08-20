@@ -9,6 +9,8 @@ import { Page } from '../../models/Page';
   providedIn: 'root'
 })
 export class BookService {
+    
+  
   
   private apiUrl: string = environment.apiUrl;
   private httpOptions = {
@@ -20,6 +22,9 @@ export class BookService {
 
   getAll(): Observable<Book[]> {
     return this.httpClient.get<Book[]>(`${this.apiUrl}/book/getAll`, this.httpOptions);
+  }
+  getPagesByCategory(page: any, code: string): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/book/getPagesByCategory/${code}`, page, this.httpOptions);
   }
   getPages(page: Page<Book>): Observable<Object> {
     return this.httpClient.post<Object>(`${this.apiUrl}/book/getPages`, page, this.httpOptions);

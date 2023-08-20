@@ -1,11 +1,14 @@
 package com.open.library.service.impl;
 
 import com.open.library.POJO.Book;
+import com.open.library.POJO.Category;
 import com.open.library.constraints.SystemConstraints;
 import com.open.library.jwt.JwtService;
 import com.open.library.mapper.BookMapper;
 import com.open.library.repository.BookRepository;
+import com.open.library.repository.CategoryRepository;
 import com.open.library.service.BookService;
+import com.open.library.service.CategoryService;
 import com.open.library.service.FirebaseService;
 import com.open.library.utils.ImageUploadUtils;
 import com.open.library.utils.OpenLibraryUtils;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,6 +41,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final JwtService jwtService;
     private final FirebaseService firebaseService;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public ResponseEntity<BaseResponse> findAll() {
@@ -289,6 +294,35 @@ public class BookServiceImpl implements BookService {
         }
         return new ResponseEntity<>(
                 OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getPagesByCategory(PageDTO pageDTO, String code) {
+        try {
+            Sort sort  = pageDTO.getSorter().getSortName().equals("asc")
+                    ? Sort.by(pageDTO.getSorter().getSortBy()).ascending()
+                    : Sort.by(pageDTO.getSorter().getSortBy()).descending();
+
+            Pageable pageable = PageRequest.of(pageDTO.getPageIndex() - 1, pageDTO.getPageSize(), sort);
+
+            List<Book> books = bookRepository.findByCategoriesCode(code, pageable).stream().toList();
+            List<BookResponseDTO> results = books.stream().map((book -> bookMapper.toResponseDTO(book))).collect(Collectors.toList());
+            return new ResponseEntity<>(
+                    OpenLibraryUtils.getResponse(
+                            PageUtils.getPage(pageDTO, Arrays.asList(results.toArray()), (int) bookRepository.count())
+                            , true, String.valueOf(HttpStatus.OK.value())),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(
+                        PageUtils.builder().length(0).pageIndex(0)
+                                .dataSource(new ArrayList<>()).build()
+                        , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

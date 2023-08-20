@@ -48,6 +48,18 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+    @PostMapping("/getPagesByCategory/{code}")
+    public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO, @PathVariable String code) {
+        try {
+            return bookService.getPagesByCategory(pageDTO, code);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
     @PostMapping("/insert")
     public ResponseEntity<BaseResponse> insertOne(@RequestParam(value = "contentPdf", required = false) MultipartFile contentPdf, @RequestParam(value = "bookCover", required = false) MultipartFile bookCover, @RequestParam("bookDto") String bookDto) {
         try {
