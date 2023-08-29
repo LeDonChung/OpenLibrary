@@ -132,7 +132,7 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public boolean isUser() {
         List<String> authorities = claims.get("authorities", List.class);
-        if(authorities.contains("USER")) {
+        if(authorities.contains("CUSTOMER")) {
             return true;
         }
         return false;

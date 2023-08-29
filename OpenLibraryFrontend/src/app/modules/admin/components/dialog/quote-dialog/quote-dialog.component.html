@@ -1,0 +1,41 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span>{{ action }} danh ngôn</span>
+        <span class="spacer"></span>
+        <button mat-dialog-close mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="quoteForm">
+        <div fxFlex fxLayout="column"> 
+            <mat-form-field fxFlex *ngIf="dialogAction !== 'add'">
+                <mat-label>ID</mat-label> 
+                <input matInput formControlName="id" readonly/>
+            </mat-form-field>
+            <div class="content" fxFlex  fxLayout="column">
+                <mat-label>Nội dung</mat-label>
+                <ckeditor class="content" formControlName="content"></ckeditor>
+                <mat-error *ngIf="quoteForm.controls.content.touched && quoteForm.controls.content.invalid">
+                    <span *ngIf="quoteForm.controls.content.errors.required">
+                        Nội dung danh ngôn không thể bỏ trống.
+                    </span>
+                </mat-error>
+            </div>
+            <mat-form-field fxFlex>
+                <mat-label>Số lượt thích</mat-label>
+                <input matInput formControlName="likes" [readonly]="dialogAction === 'view'"/>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button *ngIf="dialogAction !== 'view'" mat-raised-button color="primary" type="submit" (click)="handlerSubmit()"
+        [disabled]="!(quoteForm.valid && quoteForm.dirty)">
+        <mat-icon>save</mat-icon> {{ action }}
+    </button>
+    <button mat-raised-button color="warn" type="submit" mat-dialog-close>
+        <mat-icon>cancel</mat-icon> Close
+    </button>
+</mat-dialog-actions>

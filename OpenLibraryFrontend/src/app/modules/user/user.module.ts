@@ -16,11 +16,14 @@ import { BookDetailComponent } from './components/book-detail/book-detail.compon
 import { TagsComponent } from './components/tags/tags.component';
 import { Router, RouterModule } from '@angular/router';
 import { FindResultComponent } from './components/find-result/find-result.component';
+import { SanitizeHtmlPipe } from 'src/app/shared/pipe/sanitize-html.pipe';
+import { QuoteComponent } from './components/quote/quote.component';
 
 
 
 @NgModule({
   declarations: [
+    SanitizeHtmlPipe,
     UserComponent,
     HeaderComponent,
     HomeComponent,
@@ -33,7 +36,8 @@ import { FindResultComponent } from './components/find-result/find-result.compon
     CategoryListComponent,
     CarouselComponent,
     BookDetailComponent,
-    TagsComponent
+    TagsComponent,
+    QuoteComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +45,8 @@ import { FindResultComponent } from './components/find-result/find-result.compon
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
-    NgbPagination
+    NgbPagination,
+    
   ]
 })
 export class UserModule { }

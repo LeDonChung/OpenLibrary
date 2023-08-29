@@ -17,7 +17,9 @@
                             <div class="book">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                        <img class="book-cover" [src]="'data:image/jpeg;base64,' + book.bookCover"
+                                        <img class="book-cover" *ngIf="book.bookCover != ''" [src]="'data:image/jpeg;base64,' + book.bookCover"
+                                            alt="Sách 1" />
+                                            <img class="book-cover" *ngIf="book.bookCover == ''" src=""
                                             alt="Sách 1" />
                                     </div>
                                     
@@ -33,7 +35,7 @@
                                                 <app-tags [categories]="book.categories" tagBy="category"></app-tags>
                                             </div>
                                             <div class="publisher">
-                                                <span>Nhà xuất bản: </span>
+                                                <span>Nhà xuất bản: </span> 
                                                 <app-tags [publisher]="book.publisher" tagBy="publisher"></app-tags>
                                             </div>
                                             <span class="isbn">
@@ -74,7 +76,7 @@
                                             <h3 class="book-description-title">
                                                 Mô tả
                                             </h3>
-                                            <div class="book-description-content text-justify" [innerHTML]="book.description">
+                                            <div class="book-description-content text-justify" [innerHTML]="book.description | sanitizeHtml">
                                                 
                                             </div>
                                         </div>

@@ -32,7 +32,6 @@ import { CategoryComponent } from './components/category/category.component';
 import { CategoryDialogComponent } from './components/dialog/category-dialog/category-dialog.component';
 import { PublisherDialogComponent } from './components/dialog/publisher-dialog/publisher-dialog.component';
 import { PublisherComponent } from './components/publisher/publisher.component';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { AuthorComponent } from './components/author/author.component';
 import { AuthorDialogComponent } from './components/dialog/author-dialog/author-dialog.component';
 import { BookComponent } from './components/book/book.component';
@@ -40,6 +39,10 @@ import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { FeedbackDialogComponent } from './components/dialog/feedback-dialog/feedback-dialog.component';
+import { CKEditorModule } from 'ng2-ckeditor';
+import { QuoteComponent } from './components/quote/quote.component';
+import { QuoteDialogComponent } from './components/dialog/quote-dialog/quote-dialog.component';
+import { SanitizeHtmlPipe } from 'src/app/shared/pipe/sanitize-html.pipe';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text: 'Loading',
@@ -73,6 +76,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     EditBookComponent,
     FeedbackComponent,
     FeedbackDialogComponent,
+    QuoteComponent,
+    QuoteDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -101,7 +106,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatDialogModule,
     MatTableModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-    CKEditorModule,
+    CKEditorModule
   ]
 })
 export class AdminModule { }

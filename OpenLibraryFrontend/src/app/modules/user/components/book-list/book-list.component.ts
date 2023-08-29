@@ -24,7 +24,7 @@ export class BookListComponent implements OnInit{
 
   title?: any;
 
-  page: Page<Book> = new Page(0, 0, 5, []);
+  page: Page<Book> = new Page(0, 0, 12, []);
   
   constructor(
     private categoryService: CategoryService,
@@ -57,7 +57,7 @@ export class BookListComponent implements OnInit{
           console.log(errors);
         });
       } else if(this.type === 'publisher') {
-        this.categoryService.getByCode(this.value).subscribe((res: any) => {
+        this.publisherService.getById(this.value).subscribe((res: any) => {
           this.title = (res.data as Publisher).name;
         }, (errors: any) => {
           console.log(errors);
@@ -67,11 +67,11 @@ export class BookListComponent implements OnInit{
   }
   loadData(event: any) {
     if(event === null) {
-      this.page = new Page(0, 1, 5, [], new Sorter('title', 'asc'));
+      this.page = new Page(0, 1, 12, [], new Sorter('title', 'asc'));
     } else {
       this.page.pageIndex = event;
     }
-    this.bookService.getPagesByCategory(this.page, this.value).subscribe((res: any) => {
+    this.bookService.getPagesByTypeAndValue(this.page, this.type, this.value).subscribe((res: any) => {
       this.page = res.data;
     }, (errors: any) => {
       console.log(errors);

@@ -32,7 +32,7 @@
                     </span>
                 </mat-error>
             </mat-form-field>
-            <ckeditor [editor]="editor" formControlName="story" ></ckeditor>
+            <ckeditor formControlName="story" ></ckeditor>
                 <mat-error *ngIf="publisherForm.controls.story.touched && publisherForm.controls.story.invalid">
                     <span *ngIf="publisherForm.controls.story.errors.required">
                         Tiểu sử nhà xuất bản không thể bỏ trống.

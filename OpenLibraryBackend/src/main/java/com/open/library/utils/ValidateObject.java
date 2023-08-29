@@ -197,4 +197,16 @@ public class ValidateObject {
         );
         return errors;
     }
+
+    public static Map<String, String> validateQuoteDTO(QuoteDTO quoteDTO) {
+        Map<String, String> errors = new HashMap<>();
+        errors.putAll(
+                ValidateUtils.builder()
+                        .fieldName("content")
+                        .value(quoteDTO.getContent())
+                        .required(true)
+                        .build().validate()
+        );
+        return errors;
+    }
 }

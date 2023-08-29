@@ -5,7 +5,7 @@ export class Page<T> {
 
     length: number = 0;
     pageIndex: number = 0;
-    pageSize:number = 5;
+    pageSize:number = 12;
     dataSource: T[];
     sorter?: Sorter;
     constructor(length: number, pageIndex: number, pageSize: number, dataSource: T[], sorter?: Sorter) {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLinkActive } from '@angular/router';
-import { Author } from 'src/app/shared/models/Author';
 import { Book } from 'src/app/shared/models/Book';
 import { BookService } from 'src/app/shared/services/book/book.service';
 

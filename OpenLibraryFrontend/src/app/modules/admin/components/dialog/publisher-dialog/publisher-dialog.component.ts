@@ -6,7 +6,6 @@ import { PublisherComponent } from '../../publisher/publisher.component';
 import { SnackbarService } from 'src/app/shared/services/snackbar/snackbar.service';
 import { Publisher } from 'src/app/shared/models/Publisher';
 import { SystemConstraints } from 'src/app/shared/SystemConstraints';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-publisher-dialog',
@@ -20,7 +19,6 @@ export class PublisherDialogComponent {
   dialogAction: any = 'add';
   action: any = 'Thêm';
   responseMessage: any;
-  editor = ClassicEditor;
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public dialogData: any,

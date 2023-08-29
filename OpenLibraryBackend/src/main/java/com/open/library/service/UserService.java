@@ -23,4 +23,8 @@ public interface UserService {
     ResponseEntity<BaseResponse> getCurrentUser();
 
     ResponseEntity<BaseResponse> updateImageUser(Long id, MultipartFile image);
+
+    ResponseEntity<BaseResponse> getAllQuotes();
+
+    ResponseEntity<BaseResponse> existsQuote(Long quoteId);
 }

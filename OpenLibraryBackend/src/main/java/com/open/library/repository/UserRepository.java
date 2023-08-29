@@ -1,7 +1,9 @@
 package com.open.library.repository;
 
+import com.open.library.POJO.Quote;
 import com.open.library.POJO.Role;
 import com.open.library.POJO.User;
+import com.open.library.utils.response.QuoteResponseDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +32,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     long countAllUser();
 
     List<User> findAllByRolesContains(Role roleCustomer, Pageable pageable);
+
 }

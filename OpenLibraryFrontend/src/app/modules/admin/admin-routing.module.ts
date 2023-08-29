@@ -9,6 +9,7 @@ import { AuthorComponent } from './components/author/author.component';
 import { BookComponent } from './components/book/book.component';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
+import { QuoteComponent } from './components/quote/quote.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'publishers', component: PublisherComponent },
   { path: 'authors', component: AuthorComponent },
   { path: 'books', component: BookComponent },
+  { path: 'quotes', component: QuoteComponent },
   { path: 'books/edit', component: EditBookComponent },
   { path: 'books/edit/:id', component: EditBookComponent },
   { path: 'books/view/:id', component: EditBookComponent },

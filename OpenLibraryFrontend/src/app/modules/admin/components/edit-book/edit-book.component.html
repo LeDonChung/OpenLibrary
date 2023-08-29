@@ -75,7 +75,7 @@
 
         <div fxFlex fxLayout="column" class="descriptions">
           <button class="btn btn-primary description">Mô tả</button>
-          <ckeditor [editor]="editor" formControlName="description"></ckeditor>
+          <ckeditor class="description" formControlName="description"></ckeditor>
           <mat-error *ngIf="
               bookForm.controls.description.touched &&
               bookForm.controls.description.invalid

@@ -1,10 +1,13 @@
 package com.open.library.service.impl;
 
+import com.open.library.POJO.Quote;
 import com.open.library.POJO.Role;
 import com.open.library.POJO.User;
 import com.open.library.constraints.SystemConstraints;
 import com.open.library.jwt.JwtService;
+import com.open.library.mapper.QuoteMapper;
 import com.open.library.mapper.UserMapper;
+import com.open.library.repository.QuoteRepository;
 import com.open.library.repository.RoleRepository;
 import com.open.library.repository.UserRepository;
 import com.open.library.service.UserService;
@@ -14,6 +17,7 @@ import com.open.library.utils.PageUtils;
 import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
+import com.open.library.utils.response.QuoteResponseDTO;
 import com.open.library.utils.response.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +41,8 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final ImageUploadUtils imageUploadUtils;
+    private final QuoteMapper quoteMapper;
+    private final QuoteRepository quoteRepository;
 
     @Override
     public ResponseEntity<BaseResponse> register(UserDTO userDTO) {
@@ -74,7 +80,7 @@ public class UserServiceImpl implements UserService {
         List<UserResponseDTO> results = new ArrayList<>();
         try {
             boolean isAdmin = jwtService.isAdmin();
-            if(isAdmin) {
+            if (isAdmin) {
                 Pageable pageable = PageRequest.of(pageDTO.getPageIndex(), pageDTO.getPageSize());
                 Role roleCustomer = roleRepository.findByCode("CUSTOMER");
                 results = userRepository.findAllByRolesContains(roleCustomer, pageable).stream().map((user) -> userMapper.toResponseDto(user)).collect(Collectors.toList());
@@ -111,7 +117,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseResponse> update(UserDTO userDTO) {
         try {
             Optional<User> user = userRepository.findById(userDTO.getId());
-            if(!user.isPresent()) {
+            if (!user.isPresent()) {
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse(String.format("Người dùng có mã %d không tồn tại.", userDTO.getId()), false, String.valueOf(HttpStatus.NOT_FOUND.value())),
                         HttpStatus.NOT_FOUND
@@ -148,7 +154,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseResponse> disableById(Long id) {
         try {
             Optional<User> user = userRepository.findById(id);
-            if(!user.isPresent()) {
+            if (!user.isPresent()) {
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse(String.format("Người dùng có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.NOT_FOUND.value())),
                         HttpStatus.NOT_FOUND
@@ -178,7 +184,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseResponse> enableById(Long id) {
         try {
             Optional<User> user = userRepository.findById(id);
-            if(!user.isPresent()) {
+            if (!user.isPresent()) {
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse(String.format("Người dùng có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.NOT_FOUND.value())),
                         HttpStatus.NOT_FOUND
@@ -209,7 +215,7 @@ public class UserServiceImpl implements UserService {
         try {
             String username = jwtService.getCurrentUser();
             Optional<User> user = this.userRepository.findByUsername(username);
-            if(!user.isPresent()) {
+            if (!user.isPresent()) {
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
                         HttpStatus.BAD_REQUEST
@@ -235,21 +241,21 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseResponse> updateImageUser(Long id, MultipartFile image) {
         try {
             Optional<User> userOptional = userRepository.findById(id);
-            if(!userOptional.isPresent()) {
+            if (!userOptional.isPresent()) {
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse(String.format("Người dùng có mã %d không tồn tại.", id), false, String.valueOf(HttpStatus.NOT_FOUND.value())),
                         HttpStatus.NOT_FOUND
                 );
             }
             User user = userOptional.get();
-            if(ObjectUtils.isEmpty(image)) {
+            if (ObjectUtils.isEmpty(image)) {
                 user.setImage(null);
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse("Cập nhật hình ảnh không thành công thành công.", false, String.valueOf(HttpStatus.OK.value())),
                         HttpStatus.OK
                 );
             } else {
-                if(!imageUploadUtils.checkExistedImageUser(image)) {
+                if (!imageUploadUtils.checkExistedImageUser(image)) {
                     imageUploadUtils.uploadImageUser(image);
                 }
                 user.setImage(Base64.getEncoder().encodeToString(image.getBytes()));
@@ -263,6 +269,66 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getAllQuotes() {
+        List<QuoteResponseDTO> results = new ArrayList<>();
+        try {
+            boolean isUser = jwtService.isUser();
+            if (isUser) {
+                String currentUser = jwtService.getCurrentUser();
+                results = userRepository.findByUsername(currentUser).get().getQuotes().stream().map((quote -> quoteMapper.toResponseDTO(quote))).collect(Collectors.toList());
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(results, true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(
+                                SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED)),
+                        HttpStatus.UNAUTHORIZED
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> existsQuote(Long quoteId) {
+        try {
+            boolean isUser = jwtService.isUser();
+            if (isUser) {
+
+                String currentUser = jwtService.getCurrentUser();
+                User user = userRepository.findByUsername(currentUser).get();
+                List<Quote> quotes = user.getQuotes().stream().toList();
+
+                Quote quote = quoteRepository.findById(quoteId).get();
+
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(quotes.contains(quote), true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(
+                                SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED)),
+                        HttpStatus.UNAUTHORIZED
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(
                 OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR

@@ -144,4 +144,28 @@ public class UserController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+    @GetMapping("/getAllQuotes")
+    public ResponseEntity<BaseResponse> getAllQuotes() {
+        try {
+            return userService.getAllQuotes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+    @GetMapping("/existsQuote")
+    public ResponseEntity<BaseResponse> existsQuote(@RequestParam Long quoteId) {
+        try {
+            return userService.existsQuote(quoteId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
 }

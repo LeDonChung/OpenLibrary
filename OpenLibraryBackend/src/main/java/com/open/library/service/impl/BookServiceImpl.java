@@ -1,14 +1,12 @@
 package com.open.library.service.impl;
 
 import com.open.library.POJO.Book;
-import com.open.library.POJO.Category;
 import com.open.library.constraints.SystemConstraints;
 import com.open.library.jwt.JwtService;
 import com.open.library.mapper.BookMapper;
 import com.open.library.repository.BookRepository;
 import com.open.library.repository.CategoryRepository;
 import com.open.library.service.BookService;
-import com.open.library.service.CategoryService;
 import com.open.library.service.FirebaseService;
 import com.open.library.utils.ImageUploadUtils;
 import com.open.library.utils.OpenLibraryUtils;
@@ -26,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
@@ -298,8 +295,9 @@ public class BookServiceImpl implements BookService {
         );
     }
 
+
     @Override
-    public ResponseEntity<BaseResponse> getPagesByCategory(PageDTO pageDTO, String code) {
+    public ResponseEntity<BaseResponse> getPagesByTypeAndValue(PageDTO pageDTO, String type, String value) {
         try {
             Sort sort  = pageDTO.getSorter().getSortName().equals("asc")
                     ? Sort.by(pageDTO.getSorter().getSortBy()).ascending()
@@ -307,7 +305,14 @@ public class BookServiceImpl implements BookService {
 
             Pageable pageable = PageRequest.of(pageDTO.getPageIndex() - 1, pageDTO.getPageSize(), sort);
 
-            List<Book> books = bookRepository.findByCategoriesCode(code, pageable).stream().toList();
+            List<Book> books = new ArrayList<>();
+            if(type.equals(SystemConstraints.CATEGORY)) {
+                books = bookRepository.findByCategoriesCode(value, pageable).stream().toList();
+            } else if(type.equals(SystemConstraints.AUTHOR)) {
+                books = bookRepository.findByAuthorsId(Long.valueOf(value), pageable).stream().toList();
+            } else if(type.equals(SystemConstraints.PUBLISHER)) {
+                books = bookRepository.findByPublisherId(Long.valueOf(value), pageable).stream().toList();
+            }
             List<BookResponseDTO> results = books.stream().map((book -> bookMapper.toResponseDTO(book))).collect(Collectors.toList());
             return new ResponseEntity<>(
                     OpenLibraryUtils.getResponse(

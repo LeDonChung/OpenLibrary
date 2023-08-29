@@ -12,4 +12,8 @@ public class SystemConstraints {
     public static final Object PASSWORD_NOT_MATCHES = "Mật khẩu nhập lại không chính xác.";
     public static final String INVALID_USERNAME_OR_PASSWORD = "Tài khoản hoặc mật khẩu không chính xác.";
     public static final String ACCESS_DENIED = "Bạn không có quyền này.";
+    public static final String CATEGORY = "category";
+    public static final String AUTHOR = "author";
+    public static final String PUBLISHER = "publisher";
+
 }

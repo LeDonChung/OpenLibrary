@@ -41,4 +41,9 @@ public class User {
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Collection<Role> roles;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_quotes", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "quote_id", referencedColumnName = "quote_id"))
+    private Collection<Quote> quotes;
 }

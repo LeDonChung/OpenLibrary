@@ -1,20 +1,25 @@
 <div class="card">
     <h4 class="card-header">{{ title }}</h4>
     <div class="card-body">
-        <div class="row">
-            <ng-container *ngFor="let book of page.dataSource">
-                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 mg-b-30">
-                    <a [routerLink]="'/book/' + book.id" class="book" routerLinkActive="active">
-                        <img [src]="'data:image/jpeg;base64,' + book?.bookCover"
-                            [alt]="book?.title" />
-                        <p>{{ book?.title }}</p>
-                    </a>
-                </div>
-            </ng-container>
-        </div>
-        <div class="pagination">
-            <ngb-pagination [directionLinks]="true" [collectionSize]="page.length" [(page)]="page.pageIndex" [pageSize]="page.pageSize" [rotate]="true" [ellipses]="false"
-            [boundaryLinks]="true" (pageChange)="onChange($event)"></ngb-pagination>
-        </div>
+        <ng-container *ngIf="page.dataSource.length === 0">
+            <ngb-alert [dismissible]="false" type="info">Không có kết quả tìm kiếm.</ngb-alert>
+        </ng-container>
+        <ng-container *ngIf="page.dataSource.length !== 0">
+            <div class="row">
+                <ng-container *ngFor="let book of page.dataSource">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 mg-b-30">
+                        <a [routerLink]="'/book/' + book.id" class="book" routerLinkActive="active">
+                            <img [src]="'data:image/jpeg;base64,' + book?.bookCover"
+                                [alt]="book?.title" />
+                            <p>{{ book?.title }}</p>
+                        </a>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="pagination" *ngIf="page.dataSource.length !== 0">
+                <ngb-pagination [directionLinks]="true" [collectionSize]="page.length" [(page)]="page.pageIndex" [pageSize]="page.pageSize" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="true" (pageChange)="onChange($event)"></ngb-pagination>
+            </div>
+        </ng-container>
     </div>
 </div>

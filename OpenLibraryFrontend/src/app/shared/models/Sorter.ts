@@ -4,6 +4,6 @@ export class Sorter {
 
     constructor(sortBy?: string, sortName?: string) {
         this.sortBy = sortBy;
-        this.sortName = sortName;
+        this.sortName = sortName; 
     }
 }

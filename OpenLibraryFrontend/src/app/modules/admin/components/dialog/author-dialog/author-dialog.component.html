@@ -24,7 +24,7 @@
                 </mat-error>
             </mat-form-field> 
             <div>
-                <ckeditor [editor]="editor" formControlName="story"></ckeditor>
+                <ckeditor formControlName="story"></ckeditor>
                 <mat-error *ngIf="authorForm.controls.story.touched && authorForm.controls.story.invalid">
                     <span *ngIf="authorForm.controls.story.errors.required">
                         Tiểu sử tác giả không thể bỏ trống.

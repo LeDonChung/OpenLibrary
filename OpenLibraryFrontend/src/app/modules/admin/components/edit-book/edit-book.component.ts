@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SystemConstraints } from 'src/app/shared/SystemConstraints';
 import { Book } from 'src/app/shared/models/Book';
@@ -31,7 +31,7 @@ export class EditBookComponent implements OnInit {
   public uploadContentPdf!: File;
   public isContentPdf: boolean = false;
 
-  editor = ClassicEditor;
+  editor: any;
   public categories: any = [];
   public publishers: any = [];
   public authors: any = [];
@@ -44,7 +44,9 @@ export class EditBookComponent implements OnInit {
     private route: ActivatedRoute,
     private snackbarService: SnackbarService,
     private ngxService: NgxUiLoaderService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    @Inject(DOCUMENT) 
+    private document: Document) { }
   ngOnInit(): void {
     this.ngxService.start();
     this.createForm();
@@ -101,6 +103,7 @@ export class EditBookComponent implements OnInit {
       this.addCategory(-1);
     }
   }
+  
   createForm() {
     if (this.book == null) {
       this.bookForm = this.formBuilder.group({

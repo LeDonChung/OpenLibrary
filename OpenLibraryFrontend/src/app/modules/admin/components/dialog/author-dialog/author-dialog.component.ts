@@ -6,7 +6,6 @@ import { AuthorComponent } from '../../author/author.component';
 import { SnackbarService } from 'src/app/shared/services/snackbar/snackbar.service';
 import { SystemConstraints } from 'src/app/shared/SystemConstraints';
 import { Author } from 'src/app/shared/models/Author';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-author-dialog',
@@ -20,7 +19,6 @@ export class AuthorDialogComponent {
   dialogAction: any = 'add';
   action: any = 'Thêm';
   responseMessage: any;
-  editor = ClassicEditor;
   public imgUrl: string = "";
   public isImg: boolean = false;
   public uploadImage!: File;

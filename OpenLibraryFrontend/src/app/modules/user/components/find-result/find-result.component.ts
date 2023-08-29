@@ -34,7 +34,7 @@ export class FindResultComponent implements OnInit{
     } else if(this.router.url.includes('publisher')) {
       this.route.params.subscribe(params => {
         if(params['id'] && params['id'] != 'all') {
-          this.type = 'pulisher';
+          this.type = 'publisher';
           this.value = params['id'];
         }
       });

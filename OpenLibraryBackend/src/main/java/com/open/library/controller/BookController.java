@@ -48,10 +48,10 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
-    @PostMapping("/getPagesByCategory/{code}")
-    public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO, @PathVariable String code) {
+    @PostMapping("/getPagesByTypeAndValue")
+    public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO, @RequestParam String type, @RequestParam String value) {
         try {
-            return bookService.getPagesByCategory(pageDTO, code);
+            return bookService.getPagesByTypeAndValue(pageDTO, type, value);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class UserService {
   
   
+  
   private apiUrl:string = environment.apiUrl;
   
   private httpOptions = {
@@ -46,7 +47,13 @@ export class UserService {
   disableById(id: number): Observable<Object> {
     return this.httpClient.post<Object>(`${this.apiUrl}/user/disable/${id}`, this.httpOptions);
   } 
+  getAllQuote(): Observable<Object> {
+    return this.httpClient.get<Object>(`${this.apiUrl}/user/getAllQuotes`, this.httpOptions);
+  }
   getCurrentUser(): Observable<Object> {
     return this.httpClient.get<Object>(`${this.apiUrl}/user/getCurrentUser`, this.httpOptions);
+  }
+  existsQuote(quoteId: number): Observable<Object> {
+    return this.httpClient.get<Object>(`${this.apiUrl}/user/existsQuote?quoteId=${quoteId}`, this.httpOptions);
   }
 }
