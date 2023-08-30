@@ -1,5 +1,6 @@
 package com.open.library.POJO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,9 +30,6 @@ public class Publisher {
 
     @Column(columnDefinition = "TEXT")
     private String story;
-
-    @OneToMany(mappedBy = "publisher")
-    private Collection<Book> books;
 
     private boolean is_activated;
 

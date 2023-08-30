@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     let user: User = this.loginForm.value;
     this.userService.login(user).subscribe((res: any) => {
       this.spinnerService.hide();
-      this.authService.setToken(res.data);
+      this.authService.setToken(res.data); 
       this.router.navigate(['/admin/dashboard']);
     }, (errors: any) => {
       this.spinnerService.hide();

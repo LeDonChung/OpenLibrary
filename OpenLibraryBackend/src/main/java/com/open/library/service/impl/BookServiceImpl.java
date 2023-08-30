@@ -312,6 +312,15 @@ public class BookServiceImpl implements BookService {
                 books = bookRepository.findByAuthorsId(Long.valueOf(value), pageable).stream().toList();
             } else if(type.equals(SystemConstraints.PUBLISHER)) {
                 books = bookRepository.findByPublisherId(Long.valueOf(value), pageable).stream().toList();
+            } else if(type.equals(SystemConstraints.SEARCH_CATEGORY)) {
+                books = bookRepository.findByCategoriesNameContainingIgnoreCase(value, pageable).stream().toList();
+                System.out.println(books);
+            } else if(type.equals(SystemConstraints.SEARCH_PUBLISHER)) {
+                books = bookRepository.findByPublisherNameContainingIgnoreCase(value, pageable).stream().toList();
+            } else if(type.equals(SystemConstraints.SEARCH_AUTHOR)) {
+                books = bookRepository.findByAuthorsFullNameContainingIgnoreCase(value, pageable).stream().toList();
+            } else if(type.equals(SystemConstraints.SEARCH_BOOK)) {
+                books = bookRepository.findByTitleContainingIgnoreCase(value, pageable).stream().toList();
             }
             List<BookResponseDTO> results = books.stream().map((book -> bookMapper.toResponseDTO(book))).collect(Collectors.toList());
             return new ResponseEntity<>(

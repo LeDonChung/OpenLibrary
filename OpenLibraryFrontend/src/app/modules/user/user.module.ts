@@ -1,4 +1,4 @@
-import { NgbDropdown, NgbModule, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbDropdownModule, NgbModule, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
@@ -18,6 +18,7 @@ import { Router, RouterModule } from '@angular/router';
 import { FindResultComponent } from './components/find-result/find-result.component';
 import { SanitizeHtmlPipe } from 'src/app/shared/pipe/sanitize-html.pipe';
 import { QuoteComponent } from './components/quote/quote.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -46,7 +47,7 @@ import { QuoteComponent } from './components/quote/quote.component';
     FormsModule,
     NgbModule,
     NgbPagination,
-    
+    NgSelectModule
   ]
 })
 export class UserModule { }

@@ -16,4 +16,9 @@ public class SystemConstraints {
     public static final String AUTHOR = "author";
     public static final String PUBLISHER = "publisher";
 
+    public static final String SEARCH_CATEGORY = "search_category";
+    public static final String SEARCH_AUTHOR = "search_author";
+    public static final String SEARCH_PUBLISHER = "search_publisher";
+    public static final String SEARCH_BOOK = "search_book";
+    public static final String SEARCH_ALL = "search_all";
 }

@@ -25,7 +25,7 @@ export class RouteGuardService {
       tokenPayLoad = jwtDecode(token);
     } catch (err) {
       this.authService.logout();
-      this.router.navigate(['/user']);
+      this.router.navigate(['/home']);
     }
 
     let expectedRole = '';
@@ -36,15 +36,14 @@ export class RouteGuardService {
       }
     }
  
-    if (tokenPayLoad.role = 'USER' || tokenPayLoad.roles == 'ADMIN') {
+    if (tokenPayLoad.roles == 'ADMIN') {
       if (this.authService.isAuthenticated() && tokenPayLoad.roles == expectedRole) {
         return true;
       }
-      this.router.navigate(['/user']);
+      window.location.href = 'http://localhost:4200/home';
       return false; 
     } else { 
-      this.router.navigate(['/user']);
-      localStorage.clear();
+      window.location.href = 'http://localhost:4200/home';
       return false;
     }
   }

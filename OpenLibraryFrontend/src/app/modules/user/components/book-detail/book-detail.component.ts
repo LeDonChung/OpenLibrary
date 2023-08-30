@@ -27,4 +27,7 @@ export class BookDetailComponent implements OnInit{
       }
     });
   }
+  saveFile(url: string) {
+    
+  }
 }

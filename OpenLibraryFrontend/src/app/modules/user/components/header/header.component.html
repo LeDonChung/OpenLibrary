@@ -5,7 +5,7 @@
 		</a>
 
 		<button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
-		
+
 		<div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
 			<ul class="navbar-nav nav">
 				<li class="nav-item active">
@@ -25,29 +25,47 @@
 				</li>
 				<li class="nav-item">
 					<div class="input-group">
-						<div class="btn-group" ngbDropdown role="group">
-							<button type="button" class="btn" ngbDropdownToggle>Lọc</button>
-							<div class="dropdown-menu" ngbDropdownMenu>
-								<button ngbDropdownItem>One</button>
-								<button ngbDropdownItem>Two</button>
-								<button ngbDropdownItem>Four!</button>
-							</div>
-						</div>
-						<input type="text" class="form-control" aria-label="Text input with dropdown button">
-						<button class="btn btn-primary" type="button">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-								<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+						<ng-select [items]="searchs" bindLabel="name" bindValue="value" class="custom"
+							[(ngModel)]="selected" [clearable]="false">
+						</ng-select>
+						<input type="text" class="form-control" aria-label="Text input with dropdown button"
+							[(ngModel)]="searchValue">
+						<button class="btn btn-primary" type="button" (click)="search()">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+								class="bi bi-search" viewBox="0 0 16 16">
+								<path
+									d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
 							</svg>
-						</button> 
+						</button>
 					</div>
 				</li>
-				
-				<li class="nav-item">
-					<a class="nav-link"  [routerLink]="'/register'" (click)="isMenuCollapsed = true">Đăng ký</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" class="btn btn-primary" [routerLink]="'/login'" (click)="isMenuCollapsed = true">Đăng nhập</a>
-				</li>
+
+				<ng-container *ngIf="isLogin == false">
+					<li class="nav-item">
+						<a class="nav-link" [routerLink]="'/register'" (click)="isMenuCollapsed = true">Đăng ký</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" class="btn btn-primary" [routerLink]="'/login'"
+							(click)="isMenuCollapsed = true">Đăng nhập</a>
+					</li>
+				</ng-container>
+
+				<ng-container *ngIf="isLogin == true">
+					<div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+						<button type="button" class="btn me-2" id="dropdownManual" (focus)="myDrop.open()">
+							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+								class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+								<path
+									d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
+								<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+							</svg>
+						</button>
+						<div ngbDropdownMenu aria-labelledby="dropdownManual">
+							<button (click)="openProfile()" ngbDropdownItem>Hồ sơ của tôi</button>
+							<button (click)="logout()" ngbDropdownItem>Đăng xuất</button>
+						</div>
+					</div>
+				</ng-container>
 			</ul>
 		</div>
 	</div>

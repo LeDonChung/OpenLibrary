@@ -62,6 +62,8 @@ export class BookListComponent implements OnInit{
         }, (errors: any) => {
           console.log(errors);
         });
+      } else {
+        this.title = "Tất cả tìm kiếm cho: " + this.value;
       }
     }
   }

@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary" (click)="onSubmit()">
+                            <button [disabled]="loginForm.invalid" class="btn btn-primary" (click)="onSubmit()">
                                 Đăng nhập
                             </button>
                             <a routerLink="/register" class="btn btn-link">Đăng ký</a>

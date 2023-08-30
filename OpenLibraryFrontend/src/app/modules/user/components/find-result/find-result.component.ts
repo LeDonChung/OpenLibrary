@@ -17,7 +17,14 @@ export class FindResultComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.router.url.includes('category')) {
+    if(this.router.url.includes('result')) {
+      this.route.params.subscribe(params => {
+        let searchBy =  params['searchBy'];
+        let searchValue = params['searchValue'];
+        this.type = searchBy;
+        this.value = searchValue; 
+      });
+    } else if(this.router.url.includes('category')) {
       this.route.params.subscribe(params => {
         if(params['code'] && params['code'] != 'all') {
           this.type = 'category';
@@ -38,7 +45,7 @@ export class FindResultComponent implements OnInit{
           this.value = params['id'];
         }
       });
-    }
+    } 
   }
 }
 
