@@ -1,0 +1,35 @@
+.media {
+    display: flex;
+    .img-thumbnail {
+        width: 90px;
+        img {
+            width: 80px;
+        }
+    }
+    .media-body {
+        margin: 0 10px;
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        span {
+            color: #4e54c8 !important;
+        }
+    }
+}
+
+.account-list {
+    a {
+        padding: 1rem;
+    }
+    .list-group-item {
+        border-radius: 0;
+    }
+    
+    
+}
+
+.title-noti {
+    padding: 10px 0;
+    border-top: 1px solid #2FC;
+}

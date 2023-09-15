@@ -5,11 +5,14 @@ import { SystemConstraints } from 'src/app/shared/SystemConstraints';
 import { User } from '../../models/User';
 import { Page } from '../../models/Page';
 import { environment } from 'src/environments/environment';
+import { ChangePassword } from '../../models/ChangePassword';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  
+  
   
   
   
@@ -55,5 +58,14 @@ export class UserService {
   }
   existsQuote(quoteId: number): Observable<Object> {
     return this.httpClient.get<Object>(`${this.apiUrl}/user/existsQuote?quoteId=${quoteId}`, this.httpOptions);
+  }
+
+  updateProfile(formData: any): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/user/updateProfile`, formData, {
+      observe: 'response'
+    });
+  }
+  changePassword(data: ChangePassword): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/user/change-password`, data, this.httpOptions);
   }
 }

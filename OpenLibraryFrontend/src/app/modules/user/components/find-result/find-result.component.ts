@@ -44,7 +44,7 @@ export class FindResultComponent implements OnInit{
           this.type = 'publisher';
           this.value = params['id'];
         }
-      });
+      }); 
     } 
   }
 }

@@ -4,6 +4,8 @@ import com.open.library.constraints.SystemConstraints;
 import com.open.library.service.UserService;
 import com.open.library.utils.OpenLibraryUtils;
 import com.open.library.utils.ValidateObject;
+import com.open.library.utils.request.BookDTO;
+import com.open.library.utils.request.ChangePasswordDTO;
 import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
@@ -37,6 +39,18 @@ public class UserController {
                         PageUtils.builder().length(0).pageIndex(0)
                                 .dataSource(new ArrayList<>()).build()
                         , false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+    @PostMapping("/change-password")
+    public ResponseEntity<BaseResponse> changePassword(@RequestBody ChangePasswordDTO passwordDTO) {
+        try {
+            return userService.changePassword(passwordDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
@@ -88,6 +102,20 @@ public class UserController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
 
+    }
+
+    @PostMapping("/updateProfile")
+    public ResponseEntity<BaseResponse> update(@RequestParam(value = "image", required = false) MultipartFile image, @RequestParam("userDto") String userDto) {
+        try {
+            UserDTO userDTO = (UserDTO) OpenLibraryUtils.getRequest(userDto, UserDTO.class);
+            return userService.save(image, userDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
     }
 
     @PostMapping("/register")

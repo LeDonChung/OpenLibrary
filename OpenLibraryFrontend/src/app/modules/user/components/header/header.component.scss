@@ -14,7 +14,13 @@ a {
     font-size: 1em;
     text-decoration: none;
 }
-
-.ng-select.custom {
+.ng-select {
     width: 100px;
+}
+// custom ng-select
+.ng-select.custom ::ng-deep .ng-select-container  {            
+    min-height: 38px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    cursor: pointer;
 }

@@ -1,5 +1,6 @@
 package com.open.library.service.impl;
 
+import com.open.library.POJO.Book;
 import com.open.library.POJO.Quote;
 import com.open.library.POJO.Role;
 import com.open.library.POJO.User;
@@ -14,6 +15,7 @@ import com.open.library.service.UserService;
 import com.open.library.utils.ImageUploadUtils;
 import com.open.library.utils.OpenLibraryUtils;
 import com.open.library.utils.PageUtils;
+import com.open.library.utils.request.ChangePasswordDTO;
 import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
@@ -326,6 +328,85 @@ public class UserServiceImpl implements UserService {
                         HttpStatus.UNAUTHORIZED
                 );
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> save(MultipartFile image, UserDTO userDTO) {
+        try {
+            String username = jwtService.getCurrentUser();
+            Optional<User> userCurrent = userRepository.findByUsername(username);
+            String message = "";
+            if (userCurrent.isPresent()) {
+                User userNew = userMapper.toEntity(userCurrent.get(), userDTO);
+                // upload image
+                if (ObjectUtils.isEmpty(image)) {
+                    if (userNew.getId() == null) {
+                        userNew.setImage(null);
+                    }
+                } else {
+                    // check existed
+                    if (!imageUploadUtils.checkExistedImageUser(image)) {
+                        imageUploadUtils.uploadImageUser(image);
+                    }
+                    userNew.setImage(Base64.getEncoder().encodeToString(image.getBytes()));
+                }
+
+                message = String.format("Cập nhật thông tin thành công.");
+                userRepository.save(userNew);
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(message, true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
+                        HttpStatus.UNAUTHORIZED
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> changePassword(ChangePasswordDTO passwordDTO) {
+        try {
+            System.out.println(passwordDTO);
+            Optional<User> userCurrent = userRepository.findByUsername(passwordDTO.getUsername());
+            String message = "";
+            if (userCurrent.isPresent()) {
+                boolean match = passwordEncoder.matches(passwordDTO.getPasswordOld(), userCurrent.get().getPassword());
+                if(!match) {
+                    message = "Mật khẩu cũ không chính xác.";
+                } else {
+                    User user = userCurrent.get();
+                    user.setPassword(passwordEncoder.encode(passwordDTO.getPasswordNew()));
+                    message = "Cập nhật mật khẩu thành công.";
+                    userRepository.save(user);
+                }
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(message, true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            } else {
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse(SystemConstraints.ACCESS_DENIED, false, String.valueOf(HttpStatus.UNAUTHORIZED.value())),
+                        HttpStatus.UNAUTHORIZED
+                );
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

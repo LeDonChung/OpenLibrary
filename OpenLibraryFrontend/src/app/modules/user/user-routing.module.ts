@@ -5,6 +5,8 @@ import { LoginComponent } from 'src/app/components/login/login.component';
 import { RegisterComponent } from 'src/app/components/register/register.component';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { FindResultComponent } from './components/find-result/find-result.component';
+import { AccountComponent } from './components/account/account.component';
+import { RouteGuardService } from 'src/app/shared/services/guards/route-guard.service';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -16,6 +18,16 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'result/:searchBy/:searchValue', component: FindResultComponent},
   {path: 'register', component: RegisterComponent},
+  {
+    path: 'account',
+    component: AccountComponent,
+    loadChildren: () =>
+      import('./components/account/account.module').then((m) => m.AccountModule),
+      canActivate: [RouteGuardService],
+      data: {
+        expectedRole: ['CUSTOMER']
+      }
+  },
   {path: '**', component: HomeComponent}
 ];
 

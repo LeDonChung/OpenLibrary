@@ -27,7 +27,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -46,7 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openProfile() {
-
+    this.router.navigate(['/account/profile']);
   }
 
   logout() {

@@ -36,7 +36,7 @@ export class RouteGuardService {
       }
     }
  
-    if (tokenPayLoad.roles == 'ADMIN') {
+    if (tokenPayLoad.roles == 'ADMIN' || tokenPayLoad.roles == 'CUSTOMER') {
       if (this.authService.isAuthenticated() && tokenPayLoad.roles == expectedRole) {
         return true;
       }

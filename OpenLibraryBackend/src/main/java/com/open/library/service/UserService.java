@@ -1,5 +1,6 @@
 package com.open.library.service;
 
+import com.open.library.utils.request.ChangePasswordDTO;
 import com.open.library.utils.request.PageDTO;
 import com.open.library.utils.request.UserDTO;
 import com.open.library.utils.response.BaseResponse;
@@ -27,4 +28,8 @@ public interface UserService {
     ResponseEntity<BaseResponse> getAllQuotes();
 
     ResponseEntity<BaseResponse> existsQuote(Long quoteId);
+
+    ResponseEntity<BaseResponse> save(MultipartFile image, UserDTO userDTO);
+
+    ResponseEntity<BaseResponse> changePassword(ChangePasswordDTO passwordDTO);
 }

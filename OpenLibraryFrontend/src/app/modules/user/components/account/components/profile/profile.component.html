@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center pb-4 pb-lg-3 mb-lg-3">
+        <h3 class="m-0 p-0" style="font-size: 25px; color: #144194">
+            Thông tin người dùng
+        </h3>
+    </div>
+    <form id="avatar-form" [formGroup]="userForm">
+        <div class="rounded-lg p-4 mb-4">
+            <div class="avatar-wrapper"> 
+                <label for="avatar-upload">
+                    <div id="avatar-controls" class="media px-4">
+                        <img class="rounded-circle" id="b64"
+                            [src]="!isImg  ? imgUrl : 'data:image/jpeg;base64,' + user.image" width="150" height="150"
+                            alt="avatar"/>
+                        <div class="media-body pl-3">
+                            <input type="file" name="imageUser" id="avatar-upload" accept="image/png, image/jpeg"
+                                (change)="onViewImage($event)">
+                        </div>
+                    </div>
+                </label>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 mb-3">
+                <div class="form-group">
+                    <label for="fullName" class>Họ và tên</label>
+                    <input type="text" formControlName="fullName" id="fullName" placeholder=""
+                        class="form-control" />
+                    <div *ngIf="userForm.controls.fullName.invalid && userForm.controls.fullName.touched">
+                        <span class="field-error" *ngIf="userForm.controls.fullName.errors.required">
+                            Vui lòng nhập họ tên đầy đủ. 
+                        </span>
+                        <span class="field-error" *ngIf="userForm.controls.fullName.errors.pattern">
+                            Vui lòng nhập họ tên đầy đủ từ 5 kí tự.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <div class="form-group">
+                    <label for="email" class>Email</label>
+                    <input type="text" formControlName="email" id="email" placeholder=""
+                        class="form-control" />
+                        <div *ngIf="userForm.controls.email.invalid && userForm.controls.email.touched">
+                            <span class="field-error" *ngIf="userForm.controls.email.errors.pattern">
+                                Email không hợp lệ.
+                            </span>
+                        </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <div class="form-group">
+                    <label for="phoneNumber" class>Số điện thoại</label>
+                    <input type="text" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=""
+                        class="form-control" />
+                        <div *ngIf="userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.touched">
+                            <span class="field-error" *ngIf="userForm.controls.phoneNumber.errors.pattern">
+                                Số điện thoại không hợp lệ.
+                            </span>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="d-flex flex-wrap justify-content-center align-items-center mb-4 py-4">
+                <button [disabled]="!userForm.valid" (click)="updateProfile()" type="submit" class="btn btn-primary mt-3 mt-sm-0 px-5">
+                    Cập nhật
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>

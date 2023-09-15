@@ -14,7 +14,6 @@ import { BookListComponent } from './components/book-list/book-list.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { TagsComponent } from './components/tags/tags.component';
-import { Router, RouterModule } from '@angular/router';
 import { FindResultComponent } from './components/find-result/find-result.component';
 import { SanitizeHtmlPipe } from 'src/app/shared/pipe/sanitize-html.pipe';
 import { QuoteComponent } from './components/quote/quote.component';
@@ -51,3 +50,4 @@ import { NgSelectModule } from '@ng-select/ng-select';
   ]
 })
 export class UserModule { }
+  
