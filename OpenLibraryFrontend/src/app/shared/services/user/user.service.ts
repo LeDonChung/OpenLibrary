@@ -11,10 +11,9 @@ import { ChangePassword } from '../../models/ChangePassword';
   providedIn: 'root'
 })
 export class UserService {
-  
-  
-  
-  
+  refeshToken(body: any): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/user/refesh`, body, this.httpOptions);
+  }
   
   private apiUrl:string = environment.apiUrl;
   

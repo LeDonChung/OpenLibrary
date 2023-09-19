@@ -70,7 +70,7 @@ public class AppConfig {
                 .formLogin().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/login", "/user/register", "/user/getAllQuotes").permitAll()
-                .requestMatchers("/book/findById/**", "/book/getAll/**", "/book/getPagesByTypeAndValue/**").permitAll()
+                .requestMatchers("/book/findById/**", "/book/getAll/**", "/book/getPagesByTypeAndValue/**", "/book/read/**").permitAll()
                 .requestMatchers("/category/findById/**", "/category/findByCode/**", "/category/getAll/**", "/category/getPages/**", "/category/getAllByActivated/**").permitAll()
                 .requestMatchers("/author/findById/**", "/author/getAll/**").permitAll()
                 .requestMatchers("/publisher/findById/**", "/publisher/getAll/**").permitAll()

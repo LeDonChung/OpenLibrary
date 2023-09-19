@@ -6,6 +6,7 @@ export class Book {
     bookCover?: string;
     description?: string;
     rating?: number;
+    viewer?: number;
     publishDate?: Date;
     language? :string;
     is_activated?: boolean;

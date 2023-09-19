@@ -341,4 +341,30 @@ public class BookServiceImpl implements BookService {
         );
     }
 
+    @Override
+    public ResponseEntity<BaseResponse> read(Long id) {
+        try {
+            Optional<Book> book = bookRepository.findById(id);
+            if(book.isPresent()) {
+                Book bookEntity = book.get();
+                bookEntity.setViewer(bookEntity.getViewer() + 1);
+                bookRepository.save(bookEntity);
+                return new ResponseEntity<>(
+                        OpenLibraryUtils.getResponse("Cập nhật số lượng người xem thành công", true, String.valueOf(HttpStatus.OK.value())),
+                        HttpStatus.OK
+                );
+            }
+            return new ResponseEntity<>(
+                    OpenLibraryUtils.getResponse(String.format("Sách có mã %s không tồn tại", id), false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
+                    HttpStatus.BAD_REQUEST
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
 }

@@ -23,6 +23,8 @@ public class BookResponseDTO {
 
     private Date publishDate;
 
+    private int viewer;
+
     private String language;
 
     private boolean is_activated;

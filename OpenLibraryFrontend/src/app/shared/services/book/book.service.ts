@@ -53,4 +53,7 @@ export class BookService {
     return this.httpClient.post<Object>(`${this.apiUrl}/book/delete/${id}`, this.httpOptions);
 
   }
+  read(id: number): Observable<Object> {
+    return this.httpClient.post<Object>(`${this.apiUrl}/book/read/${id}`, this.httpOptions);
+  }
 }

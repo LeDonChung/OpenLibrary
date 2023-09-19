@@ -43,7 +43,9 @@ export class HeaderComponent implements OnInit {
   }
 
   search() {
-    window.location.href = `http://localhost:4200/result/${this.selected}/${this.searchValue}`;
+    if(this.searchValue !== '' ) {
+      window.location.href = `http://localhost:4200/result/${this.selected}/${this.searchValue}`;
+    }
   }
 
   openProfile() {

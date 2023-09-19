@@ -22,4 +22,6 @@ public interface BookService {
     ResponseEntity<BaseResponse> remove(Long id);
 
     ResponseEntity<BaseResponse> getPagesByTypeAndValue(PageDTO pageDTO, String type, String value);
+
+    ResponseEntity<BaseResponse> read(Long id);
 }

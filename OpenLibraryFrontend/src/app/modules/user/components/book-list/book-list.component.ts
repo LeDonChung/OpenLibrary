@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Component, Input, OnInit } from '@angular/core';
 import { Author } from 'src/app/shared/models/Author';
 import { Book } from 'src/app/shared/models/Book';
@@ -30,14 +31,17 @@ export class BookListComponent implements OnInit{
     private categoryService: CategoryService,
     private authorService: AuthorService,
     private publisherService: PublisherService,
-    private bookService: BookService
+    private bookService: BookService,
+    private ngxSpinnerService: NgxSpinnerService
   ) { 
     
   }
   
   ngOnInit() {
+    this.ngxSpinnerService.show();
     this.getTitle();
     this.loadData(null);
+    this.ngxSpinnerService.hide();
   }
   getTitle() {
     // kiểm tra trường hợp tìm tất cả.

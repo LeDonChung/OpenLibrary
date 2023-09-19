@@ -24,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
+
     @GetMapping("/getAll")
     public ResponseEntity<BaseResponse> getAll() {
         try {
@@ -36,6 +37,7 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
     @PostMapping("/getPages")
     public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO) {
         try {
@@ -48,6 +50,7 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
     @PostMapping("/getPagesByTypeAndValue")
     public ResponseEntity<BaseResponse> getPages(@RequestBody PageDTO pageDTO, @RequestParam String type, @RequestParam String value) {
         try {
@@ -60,12 +63,13 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
     @PostMapping("/insert")
     public ResponseEntity<BaseResponse> insertOne(@RequestParam(value = "contentPdf", required = false) MultipartFile contentPdf, @RequestParam(value = "bookCover", required = false) MultipartFile bookCover, @RequestParam("bookDto") String bookDto) {
         try {
             BookDTO bookDTO = (BookDTO) OpenLibraryUtils.getRequest(bookDto, BookDTO.class);
             Map<String, String> errors = ValidateObject.validateBookDTO(bookDTO);
-            if(!errors.isEmpty()) {
+            if (!errors.isEmpty()) {
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse(errors, false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
                         HttpStatus.BAD_REQUEST
@@ -86,7 +90,7 @@ public class BookController {
         try {
             BookDTO bookDTO = (BookDTO) OpenLibraryUtils.getRequest(bookDto, BookDTO.class);
             Map<String, String> errors = ValidateObject.validateBookDTO(bookDTO);
-            if(!errors.isEmpty()) {
+            if (!errors.isEmpty()) {
                 return new ResponseEntity<>(
                         OpenLibraryUtils.getResponse(errors, false, String.valueOf(HttpStatus.BAD_REQUEST.value())),
                         HttpStatus.BAD_REQUEST
@@ -127,6 +131,7 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
     @GetMapping("/findById/{id}")
     public ResponseEntity<BaseResponse> findById(@PathVariable Long id) {
         try {
@@ -139,6 +144,7 @@ public class BookController {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
     @PostMapping("/delete/{id}")
     public ResponseEntity<BaseResponse> removeForever(@PathVariable Long id) {
         try {
@@ -150,5 +156,17 @@ public class BookController {
                 OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
+    }
+
+    @PostMapping("/read/{id}")
+    public ResponseEntity<BaseResponse> read(@PathVariable Long id) {
+        try {
+            return bookService.read(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(
+                OpenLibraryUtils.getResponse(SystemConstraints.SOMETHING_WENT_WRONG, false, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR)),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

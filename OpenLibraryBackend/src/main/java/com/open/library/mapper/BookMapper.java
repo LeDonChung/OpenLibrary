@@ -43,6 +43,7 @@ public class BookMapper {
         dto.setBookCover(book.getBookCover());
         dto.setDescription(book.getDescription());
         dto.setRating(book.getRating());
+        dto.setViewer(book.getViewer());
         dto.setPublishDate(book.getPublishDate());
         dto.setLanguage(book.getLanguage());
         dto.set_activated(book.is_activated());

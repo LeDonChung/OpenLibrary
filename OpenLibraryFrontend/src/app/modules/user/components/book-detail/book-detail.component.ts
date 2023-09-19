@@ -30,4 +30,10 @@ export class BookDetailComponent implements OnInit{
   saveFile(url: string) {
     
   }
+  onRead(id: number) {
+    this.bookService.read(id).subscribe((res: any) => {
+      location.href = this.book.contentPdf;
+    });
+
+  }
 }

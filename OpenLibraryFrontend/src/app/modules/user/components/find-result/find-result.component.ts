@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -12,6 +13,7 @@ export class FindResultComponent implements OnInit{
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private ngxSpinnerService: NgxSpinnerService
   ) {
     
   }

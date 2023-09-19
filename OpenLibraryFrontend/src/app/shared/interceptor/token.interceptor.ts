@@ -6,16 +6,17 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user/user.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-
   constructor(
     private router: Router, 
-    private authService: AuthService) {}
+    private authService: AuthService,
+    private userService: UserService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.authService.getToken();

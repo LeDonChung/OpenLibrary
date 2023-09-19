@@ -21,6 +21,8 @@ public class BookDTO {
 
     private double rating;
 
+    private int viewer;
+
     private Date publishDate;
 
     private String language;

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SystemConstraints } from 'src/app/shared/SystemConstraints';
 import { User } from 'src/app/shared/models/User';
 import { UserService } from 'src/app/shared/services/user/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -64,7 +65,18 @@ export class RegisterComponent implements OnInit{
     let data: User = this.registerForm.value;
     this.userService.register(data).subscribe((res: any) => {
       this.spinnerService.hide();
-      this.router.navigateByUrl('/login?registerSuccess');
+      Swal.fire({
+        title: 'Đăng ký thành công.',
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonText: 'Đăng nhập',
+      }).then((result) => {
+        if (result.value) {
+          this.router.navigateByUrl('/login');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+        }
+      });
+      
     }, (errors: any) => {
       this.spinnerService.hide();
       if(errors.error.data) {
