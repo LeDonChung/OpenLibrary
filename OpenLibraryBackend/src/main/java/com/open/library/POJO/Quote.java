@@ -23,7 +23,7 @@ public class Quote {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "DEFAULT 0")
+    @Column(columnDefinition = "INT DEFAULT 0")
     private int likes;
 
     private boolean is_deleted;
